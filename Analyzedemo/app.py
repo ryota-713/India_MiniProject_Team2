@@ -162,9 +162,10 @@ WINDOW_HOURS = 24
 
 
 @st.fragment(run_every="3s")
-def _live_feed() -> None:
-    """Auto-refreshing part: poll the shop, then draw the attack-type metrics and the
-    per-attack-type time-series chart for the selected 24-hour window."""
+def _live_feed(store: EventStore) -> None:
+    """Auto-refreshing part (every 3s): poll the shop, draw the attack-type metrics and
+    the per-attack-type chart, and list the detected attack events. Keeping the table
+    inside this fragment means new attacks appear without any manual interaction."""
     target = st.session_state.get("monitor_target", "").strip()
     if target:
         try:
@@ -243,6 +244,41 @@ def _live_feed() -> None:
         st.line_chart(pivot, height=320)
     else:
         st.caption("No attacks detected in this time window yet.")
+
+    # Detected attack events table (auto-refreshes with this fragment).
+    attacks_sorted = sorted(attacks, key=lambda result: result.event.timestamp, reverse=True)
+    st.subheader(f"Detected attack events ({len(attacks_sorted)})")
+    if not attacks_sorted:
+        st.caption("No attacks detected yet. Start the demo shop and run the attack tool.")
+        return
+    st.caption("Select a row to see the AI explanation and countermeasures.")
+    table = pd.DataFrame(
+        [
+            {
+                "Time (UTC)": result.event.timestamp.astimezone(UTC).strftime("%Y-%m-%d %H:%M:%S"),
+                "Source": result.event.source,
+                "Method": result.event.method or "-",
+                "Path": result.event.path,
+                "Attack": " / ".join(attack_labels(result)) or "Other",
+                "Severity": result.display_severity,
+            }
+            for result in attacks_sorted
+        ]
+    )
+    selection = st.dataframe(
+        table,
+        hide_index=True,
+        width="stretch",
+        on_select="rerun",
+        selection_mode="single-row",
+        key="attack_table",
+    )
+    rows = selection["selection"]["rows"]
+    if rows:
+        st.divider()
+        _render_attack_explanation(attacks_sorted[rows[0]], store)
+    else:
+        st.info("↑ Select an attack row to view its AI explanation and countermeasures.")
 
 
 def _save_explanation(
@@ -341,55 +377,7 @@ def _show_live_monitor(store: EventStore) -> None:
         help="Your own demo shop address, e.g. 127.0.0.1:8080",
     )
 
-    _live_feed()
-
-    # Poll again on each full rerun so the table below always reflects the latest
-    # events (the fragment auto-refreshes the metrics/chart on its own cadence).
-    target = st.session_state.get("monitor_target", "").strip()
-    if target:
-        try:
-            _poll_into_state(normalise_base_url(target))
-        except (MonitorError, ImportDataError, OSError, sqlite3.Error):
-            pass
-
-    results = _monitor_results()
-    attacks = sorted(
-        (result for result in results if result.rule_findings),
-        key=lambda result: result.event.timestamp,
-        reverse=True,
-    )
-    st.subheader(f"Detected attack events ({len(attacks)})")
-    if not attacks:
-        st.caption("No attacks detected yet. Start the demo shop and run the attack tool.")
-        return
-    st.caption("Select a row to see the AI explanation and countermeasures.")
-    table = pd.DataFrame(
-        [
-            {
-                "Time (UTC)": result.event.timestamp.astimezone(UTC).strftime("%Y-%m-%d %H:%M:%S"),
-                "Source": result.event.source,
-                "Method": result.event.method or "-",
-                "Path": result.event.path,
-                "Attack": " / ".join(attack_labels(result)) or "Other",
-                "Severity": result.display_severity,
-            }
-            for result in attacks
-        ]
-    )
-    selection = st.dataframe(
-        table,
-        hide_index=True,
-        width="stretch",
-        on_select="rerun",
-        selection_mode="single-row",
-        key="attack_table",
-    )
-    rows = selection["selection"]["rows"]
-    if rows:
-        st.divider()
-        _render_attack_explanation(attacks[rows[0]], store)
-    else:
-        st.info("↑ Select an attack row to view its AI explanation and countermeasures.")
+    _live_feed(store)
 
 
 def main() -> None:
