@@ -119,8 +119,13 @@ def check_login(username: str, password: str) -> bool:
 
 
 # ------------------------------------------------------------------------- log
+# By default the shop keeps its request log in memory only, so no attack data is left
+# on disk. Set EC_PERSIST_LOG=1 to also write ec-shop/logs/ec_events.json.
+PERSIST_LOG = os.environ.get("EC_PERSIST_LOG", "0") == "1"
+
+
 def _load_events() -> None:
-    if LOG_FILE.exists():
+    if PERSIST_LOG and LOG_FILE.exists():
         try:
             _events.extend(json.loads(LOG_FILE.read_text(encoding="utf-8")).get("events", []))
         except (OSError, ValueError):
@@ -146,10 +151,13 @@ def record_event(method: str, path: str, status: int, source: str, user_agent: s
     event["timestamp"] = event["timestamp"][:-2] + ":" + event["timestamp"][-2:]
     with _log_lock:
         _events.append(event)
-        LOG_FILE.parent.mkdir(parents=True, exist_ok=True)
-        tmp = LOG_FILE.with_suffix(".tmp")
-        tmp.write_text(json.dumps({"events": _events}, ensure_ascii=False, indent=2), encoding="utf-8")
-        tmp.replace(LOG_FILE)
+        if PERSIST_LOG:
+            LOG_FILE.parent.mkdir(parents=True, exist_ok=True)
+            tmp = LOG_FILE.with_suffix(".tmp")
+            tmp.write_text(
+                json.dumps({"events": _events}, ensure_ascii=False, indent=2), encoding="utf-8"
+            )
+            tmp.replace(LOG_FILE)
 
 
 def recent_events(since: int, limit: int = 2000) -> tuple[list[dict], int]:

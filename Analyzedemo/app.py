@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import os
 import sqlite3
 from dataclasses import replace
 from datetime import UTC, datetime, timedelta
@@ -10,7 +9,6 @@ import pandas as pd
 import streamlit as st
 from dotenv import load_dotenv
 
-from detection.demo_data import load_synthetic_events
 from detection.engine import HybridDetector
 from detection.gemini_explain import GeminiError, gemini_configured
 from detection.gemini_explain import explain as ai_explain
@@ -86,136 +84,6 @@ def get_store(database_path: str) -> EventStore:
     return EventStore(database_path)
 
 
-def _severity_order(severity: str) -> int:
-    return {"Info": 0, "Low": 1, "Medium": 2, "High": 3}.get(severity, -1)
-
-
-def _category_text(result: DetectionResult) -> str:
-    categories = [finding.category for finding in result.rule_findings]
-    if result.ai_finding.suspicious and result.ai_finding.category:
-        categories.append(result.ai_finding.category)
-    return ", ".join(dict.fromkeys(categories)) or "No indicator"
-
-
-def _result_row(result: DetectionResult) -> dict[str, object]:
-    return {
-        "Time (UTC)": result.event.timestamp.astimezone(UTC).strftime("%Y-%m-%d %H:%M:%S"),
-        "Source": result.event.source,
-        "Method": result.event.method or "Not provided",
-        "Path": result.event.path,
-        "Category": _category_text(result),
-        "Severity": result.display_severity,
-        "Detected by": ", ".join(result.detection_sources) or "None",
-        "AI state": result.ai_finding.status,
-        "Event ID": result.event.event_id,
-    }
-
-
-def _load_demo(store: EventStore) -> int:
-    results = HybridDetector().analyze(load_synthetic_events())
-    return store.save_results(results)
-
-
-def _show_overview(store: EventStore) -> None:
-    st.markdown(
-        '<div class="signal-label">Defensive monitoring / local workspace</div>',
-        unsafe_allow_html=True,
-    )
-    st.title("Request Signal")
-    st.caption(
-        "Screens web requests for attack signatures with rules and a local statistical "
-        "AI. A detection is a signal, not proof of compromise."
-    )
-    results = store.list_results()
-    suspicious = [result for result in results if result.is_suspicious]
-    status_columns = st.columns(3)
-    status_columns[0].caption("RULE DETECTION")
-    status_columns[0].write("Active · local")
-    status_columns[1].caption("LOCAL STATISTICAL AI")
-    status_columns[1].write("Active · request-shape baseline")
-    status_columns[2].caption("AI EXPLANATION")
-    status_columns[2].write("Enabled · auto" if gemini_configured() else "Disabled")
-
-    metric_columns = st.columns(4)
-    metric_columns[0].metric("Processed events", f"{len(results):,}")
-    metric_columns[1].metric("Needs review", f"{len(suspicious):,}")
-    metric_columns[2].metric(
-        "High", sum(result.display_severity == "High" for result in suspicious)
-    )
-    metric_columns[3].metric("AI disagreement", sum(result.disagreement for result in results))
-    severity_counts = {
-        severity: sum(result.display_severity == severity for result in results)
-        for severity in ("High", "Medium", "Low", "Info")
-    }
-    st.caption(
-        "Severity distribution: "
-        + " · ".join(f"{severity} {count}" for severity, count in severity_counts.items())
-    )
-
-    st.subheader("Recent events")
-    if not results:
-        st.info(
-            "No events yet. Load the synthetic demo, or monitor the demo shop from the "
-            "Live Attack Monitor page."
-        )
-        if st.button("Load synthetic demo events", type="primary"):
-            st.success(f"Registered {_load_demo(store)} synthetic events.")
-            st.rerun()
-        return
-
-    filtered = results
-    rows = [_result_row(result) for result in filtered]
-    st.dataframe(
-        pd.DataFrame(rows).drop(columns=["Event ID"]),
-        hide_index=True,
-        width="stretch",
-    )
-    selected_id = st.selectbox(
-        "Event detail",
-        [result.event.event_id for result in filtered],
-        format_func=lambda event_id: next(
-            f"{event_id} · {_category_text(item)}"
-            for item in filtered
-            if item.event.event_id == event_id
-        ),
-    )
-    selected = next(result for result in filtered if result.event.event_id == selected_id)
-    with st.expander("Evidence and verdict for the selected event", expanded=True):
-        left, right = st.columns(2)
-        with left:
-            st.markdown("**Observed facts**")
-            st.json(
-                {
-                    "event_id": selected.event.event_id,
-                    "timestamp": selected.event.timestamp.isoformat(),
-                    "source": selected.event.source,
-                    "method": selected.event.method,
-                    "path": selected.event.path,
-                    "status_code": selected.event.status_code,
-                    "user_agent": selected.event.user_agent,
-                }
-            )
-        with right:
-            st.markdown("**Rule detection**")
-            if selected.rule_findings:
-                for finding in selected.rule_findings:
-                    st.write(f"{finding.rule_id} · {finding.name} · {finding.severity}")
-                    st.caption(finding.evidence)
-            else:
-                st.write("No rule match")
-            st.markdown("**AI-assisted detection**")
-            st.write(f"Status: {selected.ai_finding.status}")
-            if selected.ai_finding.suspicious is not None:
-                st.write(f"Verdict: {'Needs review' if selected.ai_finding.suspicious else 'No indication'}")
-                st.write(f"Normalized score: {selected.ai_finding.score} (not a probability)")
-                st.caption(selected.ai_finding.evidence or "")
-            st.caption(selected.ai_finding.limitation or "")
-        if selected.disagreement:
-            st.warning("Rule detection and AI detection disagree. Review each result separately.")
-        st.divider()
-        _render_attack_explanation(selected, store)
-
-
 def _show_rules() -> None:
     st.title("Detection Rules")
     rules = [
@@ -261,18 +129,25 @@ def _monitor_state() -> dict:
     )
 
 
-def _poll_into_state(store: EventStore, base_url: str) -> int:
-    """Pull new events from the shop feed, run detection (rules + local AI), persist,
-    and cache them in the session. Returns the count of newly ingested events."""
+def _poll_into_state(base_url: str) -> int:
+    """Pull new events from the shop feed, run detection (rules + local AI), and cache
+    them in the session only. Nothing is written to disk.
+
+    The first poll after connecting to a target sets a baseline: the events already in
+    the shop log are skipped, so the counters start at 0 on every run and rise only
+    with attacks that happen while monitoring. Re-entering the target resets to 0.
+    """
     state = _monitor_state()
     if state["target"] != base_url:
-        state.update(cursor=0, events={}, target=base_url)
+        state.update(cursor=0, events={}, target=base_url, baseline_pending=True)
     events, total = poll_events(base_url, state["cursor"])
+    if state.get("baseline_pending"):
+        state.update(cursor=total, baseline_pending=False)
+        return 0
     fresh = [event for event in events if event.get("event_id") not in state["events"]]
     state["cursor"] = total
     if fresh:
         detected = HybridDetector().analyze(import_json_events(feed_to_json(fresh)), ai_enabled=True)
-        store.save_results(detected)
         for result in detected:
             state["events"][result.event.event_id] = result
     return len(fresh)
@@ -287,14 +162,14 @@ WINDOW_HOURS = 24
 
 
 @st.fragment(run_every="3s")
-def _live_feed(store: EventStore) -> None:
+def _live_feed() -> None:
     """Auto-refreshing part: poll the shop, then draw the attack-type metrics and the
     per-attack-type time-series chart for the selected 24-hour window."""
     target = st.session_state.get("monitor_target", "").strip()
     if target:
         try:
             base_url = normalise_base_url(target)
-            _poll_into_state(store, base_url)
+            _poll_into_state(base_url)
             st.caption(f"Connected to {base_url} · auto-refreshing every 3s")
         except MonitorError as exc:
             st.warning(str(exc))
@@ -466,14 +341,14 @@ def _show_live_monitor(store: EventStore) -> None:
         help="Your own demo shop address, e.g. 127.0.0.1:8080",
     )
 
-    _live_feed(store)
+    _live_feed()
 
     # Poll again on each full rerun so the table below always reflects the latest
     # events (the fragment auto-refreshes the metrics/chart on its own cadence).
     target = st.session_state.get("monitor_target", "").strip()
     if target:
         try:
-            _poll_into_state(store, normalise_base_url(target))
+            _poll_into_state(normalise_base_url(target))
         except (MonitorError, ImportDataError, OSError, sqlite3.Error):
             pass
 
@@ -518,25 +393,24 @@ def _show_live_monitor(store: EventStore) -> None:
 
 
 def main() -> None:
-    database_path = os.getenv("DATABASE_PATH", str(PROJECT_ROOT / "data" / "events.sqlite3"))
+    # In-memory store only: nothing is written to a local database file, so no event
+    # data remains on disk or between runs.
     try:
-        store = get_store(database_path)
+        store = get_store(":memory:")
     except (OSError, sqlite3.Error):
-        st.error("Cannot open the local event database. Check DATABASE_PATH and file permissions.")
+        st.error("Cannot open the in-memory event store.")
         st.stop()
 
     with st.sidebar:
         st.title("RS / SIGNAL DESK")
         page = st.radio(
             "Workspace",
-            ["Overview", "Live Attack Monitor", "Detection Rules"],
+            ["Live Attack Monitor", "Detection Rules"],
             label_visibility="collapsed",
         )
         st.caption("LOCAL · DEFENSIVE DEMO")
 
-    if page == "Overview":
-        _show_overview(store)
-    elif page == "Live Attack Monitor":
+    if page == "Live Attack Monitor":
         _show_live_monitor(store)
     else:
         _show_rules()
