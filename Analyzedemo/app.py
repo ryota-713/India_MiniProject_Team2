@@ -2,30 +2,25 @@ from __future__ import annotations
 
 import os
 import sqlite3
-import time
 from dataclasses import replace
-from datetime import UTC, datetime
+from datetime import UTC, datetime, timedelta
 from pathlib import Path
 
 import pandas as pd
 import streamlit as st
 from dotenv import load_dotenv
 
-from detection.copilot import (
-    MAX_EXPLANATION_LENGTH,
-    CopilotExplainer,
-    _prompt_for,
-    _request_payload,
-)
 from detection.demo_data import load_synthetic_events
 from detection.engine import HybridDetector
+from detection.gemini_explain import GeminiError, gemini_configured
+from detection.gemini_explain import explain as ai_explain
 from detection.live_monitor import (
+    ATTACK_LABELS,
     MonitorError,
+    attack_labels,
     feed_to_json,
     normalise_base_url,
     poll_events,
-    summarise,
-    time_series,
 )
 from detection.models import AIExplanation, DetectionResult
 from detection.storage import EventStore
@@ -34,10 +29,7 @@ from detection.transfer import ImportDataError, import_json_events
 PROJECT_ROOT = Path(__file__).resolve().parent
 load_dotenv(PROJECT_ROOT / ".env", override=False)
 
-
-def _copilot_enabled() -> bool:
-    return os.getenv("COPILOT_ENABLED", "").lower() == "true"
-
+MAX_EXPLANATION_LENGTH = 4000
 
 st.set_page_config(page_title="Request Signal", page_icon="RS", layout="wide")
 st.markdown(
@@ -94,11 +86,6 @@ def get_store(database_path: str) -> EventStore:
     return EventStore(database_path)
 
 
-@st.cache_resource
-def get_copilot_explainer(model_name: str) -> CopilotExplainer:
-    return CopilotExplainer(model=model_name)
-
-
 def _severity_order(severity: str) -> int:
     return {"Info": 0, "Low": 1, "Medium": 2, "High": 3}.get(severity, -1)
 
@@ -136,7 +123,8 @@ def _show_overview(store: EventStore) -> None:
     )
     st.title("Request Signal")
     st.caption(
-        "Webリクエストの兆候をルールとローカル統計AIで照合します。検知結果は侵害の証明ではありません。"
+        "Screens web requests for attack signatures with rules and a local statistical "
+        "AI. A detection is a signal, not proof of compromise."
     )
     results = store.list_results()
     suspicious = [result for result in results if result.is_suspicious]
@@ -145,21 +133,16 @@ def _show_overview(store: EventStore) -> None:
     status_columns[0].write("Active · local")
     status_columns[1].caption("LOCAL STATISTICAL AI")
     status_columns[1].write("Active · request-shape baseline")
-    copilot_state = (
-        "Enabled · local CLI sign-in checked on use"
-        if _copilot_enabled()
-        else "Disabled"
-    )
-    status_columns[2].caption("COPILOT SDK EXPLANATION")
-    status_columns[2].write(copilot_state)
+    status_columns[2].caption("AI EXPLANATION")
+    status_columns[2].write("Enabled · auto" if gemini_configured() else "Disabled")
 
     metric_columns = st.columns(4)
-    metric_columns[0].metric("処理イベント", f"{len(results):,}")
-    metric_columns[1].metric("要確認", f"{len(suspicious):,}")
+    metric_columns[0].metric("Processed events", f"{len(results):,}")
+    metric_columns[1].metric("Needs review", f"{len(suspicious):,}")
     metric_columns[2].metric(
         "High", sum(result.display_severity == "High" for result in suspicious)
     )
-    metric_columns[3].metric("AI不一致", sum(result.disagreement for result in results))
+    metric_columns[3].metric("AI disagreement", sum(result.disagreement for result in results))
     severity_counts = {
         severity: sum(result.display_severity == severity for result in results)
         for severity in ("High", "Medium", "Low", "Info")
@@ -169,52 +152,18 @@ def _show_overview(store: EventStore) -> None:
         + " · ".join(f"{severity} {count}" for severity, count in severity_counts.items())
     )
 
-    with st.sidebar:
-        st.subheader("絞り込み")
-        source_options = sorted({result.event.source for result in results})
-        selected_sources = st.multiselect("Source", source_options, default=source_options)
-        severity_options = ["High", "Medium", "Low", "Info"]
-        selected_severities = st.multiselect("Severity", severity_options, default=severity_options)
-        category_options = sorted({_category_text(result) for result in results})
-        selected_categories = st.multiselect(
-            "Detection category", category_options, default=category_options
-        )
-        if results:
-            days = [result.event.timestamp.astimezone(UTC).date() for result in results]
-            selected_dates = st.date_input("Date range (UTC)", value=(min(days), max(days)))
-        else:
-            selected_dates = ()
-
-    filtered = [
-        result
-        for result in results
-        if result.event.source in selected_sources
-        and result.display_severity in selected_severities
-        and _category_text(result) in selected_categories
-    ]
-    if isinstance(selected_dates, tuple) and len(selected_dates) == 2:
-        filtered = [
-            result
-            for result in filtered
-            if selected_dates[0]
-            <= result.event.timestamp.astimezone(UTC).date()
-            <= selected_dates[1]
-        ]
-
     st.subheader("Recent events")
     if not results:
         st.info(
-            "イベントはまだありません。合成デモを読み込むか、"
-            "Import & Testからファイルを取り込んでください。"
+            "No events yet. Load the synthetic demo, or monitor the demo shop from the "
+            "Live Attack Monitor page."
         )
-        if st.button("合成デモイベントを読み込む", type="primary"):
-            st.success(f"合成イベントを {_load_demo(store)} 件登録しました。")
+        if st.button("Load synthetic demo events", type="primary"):
+            st.success(f"Registered {_load_demo(store)} synthetic events.")
             st.rerun()
         return
-    if not filtered:
-        st.info("現在のフィルターに一致するイベントはありません。")
-        return
 
+    filtered = results
     rows = [_result_row(result) for result in filtered]
     st.dataframe(
         pd.DataFrame(rows).drop(columns=["Event ID"]),
@@ -222,7 +171,7 @@ def _show_overview(store: EventStore) -> None:
         width="stretch",
     )
     selected_id = st.selectbox(
-        "イベント詳細",
+        "Event detail",
         [result.event.event_id for result in filtered],
         format_func=lambda event_id: next(
             f"{event_id} · {_category_text(item)}"
@@ -231,10 +180,10 @@ def _show_overview(store: EventStore) -> None:
         ),
     )
     selected = next(result for result in filtered if result.event.event_id == selected_id)
-    with st.expander("選択したイベントの根拠と判定", expanded=True):
+    with st.expander("Evidence and verdict for the selected event", expanded=True):
         left, right = st.columns(2)
         with left:
-            st.markdown("**観測された事実**")
+            st.markdown("**Observed facts**")
             st.json(
                 {
                     "event_id": selected.event.event_id,
@@ -247,76 +196,24 @@ def _show_overview(store: EventStore) -> None:
                 }
             )
         with right:
-            st.markdown("**ルール検知**")
+            st.markdown("**Rule detection**")
             if selected.rule_findings:
                 for finding in selected.rule_findings:
                     st.write(f"{finding.rule_id} · {finding.name} · {finding.severity}")
                     st.caption(finding.evidence)
             else:
-                st.write("ルール一致なし")
-            st.markdown("**AI支援型検知**")
-            st.write(f"状態: {selected.ai_finding.status}")
+                st.write("No rule match")
+            st.markdown("**AI-assisted detection**")
+            st.write(f"Status: {selected.ai_finding.status}")
             if selected.ai_finding.suspicious is not None:
-                st.write(f"判定: {'要確認' if selected.ai_finding.suspicious else '兆候なし'}")
-                st.write(f"正規化スコア: {selected.ai_finding.score}（確率ではありません）")
+                st.write(f"Verdict: {'Needs review' if selected.ai_finding.suspicious else 'No indication'}")
+                st.write(f"Normalized score: {selected.ai_finding.score} (not a probability)")
                 st.caption(selected.ai_finding.evidence or "")
             st.caption(selected.ai_finding.limitation or "")
         if selected.disagreement:
-            st.warning("ルール検知とAI検知の判定が異なります。両方の結果を個別に確認してください。")
-        if selected.ai_explanation:
-            st.markdown("**Copilotによる補足仮説**")
-            status = selected.ai_explanation.status
-            if selected.ai_explanation.cached:
-                status += " · cache"
-            st.caption(f"状態: {status}")
-            if selected.ai_explanation.text:
-                st.text(selected.ai_explanation.text)
-                st.caption("AI生成の仮説であり、観測事実や検知証拠ではありません。")
-            elif selected.ai_explanation.message:
-                st.warning(selected.ai_explanation.message)
-
+            st.warning("Rule detection and AI detection disagree. Review each result separately.")
         st.divider()
-        st.markdown("**AI解説（M365 Copilot用）**")
-        st.caption(
-            "検知はルール／ローカル統計AI（プログラム）が担当します。AIには"
-            "“検知結果の解説”だけを任せます。下のプロンプトをコピーして"
-            "M365 Copilotに貼り付けると、日本語の解説が得られます。"
-            "送信されるのはサニタイズ済みのPath・Method/Status・ルール根拠・"
-            "ローカルAI判定だけで、Source・User-Agent・Request bodyは含めません。"
-        )
-        with st.expander("Copilotへ渡す内容（サニタイズ済み・確認用）"):
-            st.json(_request_payload(selected))
-
-        st.markdown("① コピー用プロンプト（右上のアイコンでコピー）")
-        st.code(_prompt_for(selected), language="text")
-
-        st.markdown("② M365 Copilotの回答を貼り戻す")
-        existing = (
-            selected.ai_explanation.text
-            if selected.ai_explanation and selected.ai_explanation.text
-            else ""
-        )
-        with st.form(f"m365-explain-{selected.event.event_id}"):
-            answer = st.text_area(
-                "AIの解説（M365 Copilotの回答を貼り付け）",
-                value=existing,
-                height=170,
-                placeholder="M365 Copilotが返した解説をここに貼り付けてください。",
-            )
-            saved = st.form_submit_button("解説を保存", type="primary")
-        if saved:
-            text = answer.strip()
-            if not text:
-                st.warning("保存する解説テキストを貼り付けてください。")
-            else:
-                explanation = AIExplanation(
-                    status="generated",
-                    text=text[:MAX_EXPLANATION_LENGTH],
-                    model="M365 Copilot (manual)",
-                )
-                store.update_result(replace(selected, ai_explanation=explanation))
-                st.success("AI解説を保存しました。")
-                st.rerun()
+        _render_attack_explanation(selected, store)
 
 
 def _show_rules() -> None:
@@ -326,72 +223,230 @@ def _show_rules() -> None:
             "Rule ID": "SQLI-001",
             "Category": "SQL injection",
             "Severity": "High",
-            "Limit": "SQL構文に似た文字列を検出。成功や悪意は証明しない。",
+            "Limit": "Detects SQL-like syntax in a request. Does not prove success or intent.",
         },
         {
             "Rule ID": "XSS-001",
             "Category": "Cross-site scripting",
             "Severity": "High",
-            "Limit": "HTML/スクリプト関連パターン。正規のテスト文字列も一致し得る。",
+            "Limit": "HTML/script-handler patterns. Legitimate test strings can also match.",
         },
         {
             "Rule ID": "PATH-001",
             "Category": "Path traversal",
             "Severity": "High",
-            "Limit": "親ディレクトリ移動の表記を検出。対象への到達や成功は判定しない。",
+            "Limit": "Detects parent-directory syntax. Does not judge reach or success.",
         },
         {
             "Rule ID": "AUTH-REPEAT-001",
             "Category": "Authentication anomaly",
             "Severity": "Medium",
-            "Limit": "同一sourceのログイン失敗5件以上/5分。共有IP等で誤検知し得る。",
+            "Limit": "5+ login failures from one source in 5 min. Shared IPs can cause false positives.",
         },
         {
             "Rule ID": "AI-ROBUST-MAD",
             "Category": "Anomalous request shape",
             "Severity": "Score-based",
-            "Limit": "合成ベースラインとの統計距離。スコアは確率ではなく、"
-            "変わった正常経路も検出し得る。",
+            "Limit": "Statistical distance from a synthetic baseline. The score is not a "
+            "probability and unusual-but-benign paths can match.",
         },
     ]
     st.dataframe(pd.DataFrame(rules), hide_index=True, width="stretch")
-    st.warning("これは教育用の兆候検出デモであり、認定IDSや侵害判定システムではありません。")
+    st.warning("This is an educational signature-detection demo, not a certified IDS or breach-decision system.")
 
 
 def _monitor_state() -> dict:
     return st.session_state.setdefault(
-        "live_monitor", {"cursor": 0, "events": {}, "target": "", "live": False, "last_error": ""}
+        "live_monitor", {"cursor": 0, "events": {}, "target": ""}
     )
 
 
 def _poll_into_state(store: EventStore, base_url: str) -> int:
-    """Pull new events from the shop feed, detect, persist, and cache in session.
-
-    Returns the number of newly ingested events, or -1 when this poll only set a
-    fresh baseline (after a reset or when the target first changes): events already
-    in the shop log before that point are skipped, so the monitor counts from zero
-    and rises only as new attacks arrive.
-    """
+    """Pull new events from the shop feed, run detection (rules + local AI), persist,
+    and cache them in the session. Returns the count of newly ingested events."""
     state = _monitor_state()
     if state["target"] != base_url:
-        state.update(cursor=0, events={}, target=base_url, baseline_pending=True)
+        state.update(cursor=0, events={}, target=base_url)
     events, total = poll_events(base_url, state["cursor"])
-    if state.get("baseline_pending"):
-        # Treat everything already logged as the baseline; count only later events.
-        state.update(cursor=total, events={}, baseline_pending=False)
-        return -1
     fresh = [event for event in events if event.get("event_id") not in state["events"]]
     state["cursor"] = total
     if fresh:
-        detected = HybridDetector().analyze(import_json_events(feed_to_json(fresh)), ai_enabled=False)
+        detected = HybridDetector().analyze(import_json_events(feed_to_json(fresh)), ai_enabled=True)
         store.save_results(detected)
         for result in detected:
             state["events"][result.event.event_id] = result
     return len(fresh)
 
 
-def _monitor_results(store: EventStore) -> tuple[DetectionResult, ...]:
+def _monitor_results() -> tuple[DetectionResult, ...]:
     return tuple(_monitor_state()["events"].values())
+
+
+CHART_BUCKET = "10min"
+WINDOW_HOURS = 24
+
+
+@st.fragment(run_every="3s")
+def _live_feed(store: EventStore) -> None:
+    """Auto-refreshing part: poll the shop, then draw the attack-type metrics and the
+    per-attack-type time-series chart for the selected 24-hour window."""
+    target = st.session_state.get("monitor_target", "").strip()
+    if target:
+        try:
+            base_url = normalise_base_url(target)
+            _poll_into_state(store, base_url)
+            st.caption(f"Connected to {base_url} · auto-refreshing every 3s")
+        except MonitorError as exc:
+            st.warning(str(exc))
+        except (ImportDataError, OSError, sqlite3.Error) as exc:
+            st.warning(f"Could not ingest the feed: {exc}")
+    else:
+        st.caption("Enter the demo shop target above to start monitoring.")
+
+    results = _monitor_results()
+    attacks = [result for result in results if result.rule_findings]
+
+    offset = int(st.session_state.get("day_offset", 0))
+    window_end = datetime.now(UTC) - timedelta(hours=WINDOW_HOURS * offset)
+    window_start = window_end - timedelta(hours=WINDOW_HOURS)
+    in_window = [
+        result
+        for result in attacks
+        if window_start <= result.event.timestamp.astimezone(UTC) <= window_end
+    ]
+
+    counts = dict.fromkeys(ATTACK_LABELS, 0)
+    for result in in_window:
+        for label in attack_labels(result):
+            counts[label] += 1
+    metric_columns = st.columns(len(ATTACK_LABELS))
+    for column, label in zip(metric_columns, ATTACK_LABELS, strict=True):
+        column.metric(label, f"{counts[label]:,}")
+
+    nav = st.columns([1.2, 2.6, 1.2])
+    if nav[0].button("◀ Earlier 24h", use_container_width=True):
+        st.session_state["day_offset"] = offset + 1
+        st.rerun(scope="fragment")
+    window_label = (
+        "Last 24 hours"
+        if offset == 0
+        else f"{window_start:%Y-%m-%d %H:%M} – {window_end:%Y-%m-%d %H:%M} UTC"
+    )
+    nav[1].markdown(
+        f"<div style='text-align:center;padding-top:6px'>Showing detected access · "
+        f"<b>{window_label}</b></div>",
+        unsafe_allow_html=True,
+    )
+    if nav[2].button("Later 24h ▶", use_container_width=True, disabled=offset == 0):
+        st.session_state["day_offset"] = max(0, offset - 1)
+        st.rerun(scope="fragment")
+
+    records = [
+        (result.event.timestamp.astimezone(UTC), label)
+        for result in in_window
+        for label in attack_labels(result)
+    ]
+    if records:
+        frame = pd.DataFrame(records, columns=["time", "category"])
+        pivot = frame.pivot_table(
+            index=frame["time"].dt.floor(CHART_BUCKET),
+            columns="category",
+            aggfunc="size",
+            fill_value=0,
+        )
+        full_index = pd.date_range(
+            pd.Timestamp(window_start).floor(CHART_BUCKET),
+            pd.Timestamp(window_end).ceil(CHART_BUCKET),
+            freq=CHART_BUCKET,
+        )
+        pivot = pivot.reindex(full_index, fill_value=0)
+        for label in ATTACK_LABELS:
+            if label not in pivot.columns:
+                pivot[label] = 0
+        pivot = pivot[list(ATTACK_LABELS)]
+        pivot.index.name = "time (UTC)"
+        st.line_chart(pivot, height=320)
+    else:
+        st.caption("No attacks detected in this time window yet.")
+
+
+def _save_explanation(
+    result: DetectionResult, text: str, store: EventStore, *, model: str
+) -> DetectionResult:
+    """Persist an explanation to the store and the live-monitor session cache."""
+    updated = replace(
+        result,
+        ai_explanation=AIExplanation(
+            status="generated",
+            text=text.strip()[:MAX_EXPLANATION_LENGTH],
+            model=model,
+        ),
+    )
+    store.update_result(updated)
+    cache = _monitor_state()["events"]
+    if result.event.event_id in cache:
+        cache[result.event.event_id] = updated
+    return updated
+
+
+def _render_attack_explanation(result: DetectionResult, store: EventStore) -> None:
+    """Show detection facts plus an AI-written explanation for one event.
+
+    When the AI backend is configured, the explanation is generated automatically on
+    selection (no copy-paste). The program only supplies sanitized facts; the
+    explanation text is written by the AI.
+    """
+    st.markdown("**AI Explanation**")
+    st.caption(
+        "Detection is done by the program (rules + local statistical AI). The "
+        "explanation text is written on the fly by the AI from the sanitized facts "
+        "below (method, path, rule evidence, local-AI verdict) — no source, user-agent "
+        "or request body is sent, and there is no pre-written text."
+    )
+    st.markdown(
+        f"Attack type: **{' / '.join(attack_labels(result)) or 'Other'}** · Severity: "
+        f"**{result.display_severity}**"
+    )
+    with st.expander("Detection facts (rules + local statistical AI)", expanded=True):
+        for finding in result.rule_findings:
+            st.write(f"{finding.rule_id} · {finding.name}: {finding.evidence}")
+        if result.ai_finding.suspicious is not None:
+            st.caption(
+                f"Local statistical AI: "
+                f"{'flagged' if result.ai_finding.suspicious else 'not flagged'} "
+                f"(score {result.ai_finding.score})"
+            )
+
+    if not gemini_configured():
+        st.info("AI explanation is not configured. Set the AI API key in the .env file to enable it.")
+        return
+
+    # Auto-generate on first selection of an attack event.
+    already = bool(result.ai_explanation and result.ai_explanation.text)
+    if not already and result.rule_findings:
+        with st.spinner("Generating explanation with AI…"):
+            try:
+                result = _save_explanation(result, ai_explain(result), store, model="AI")
+                already = True
+            except GeminiError as exc:
+                st.warning(f"AI explanation failed: {exc}")
+                if st.button("Retry", key=f"retry-{result.event.event_id}"):
+                    st.rerun()
+                return
+
+    if already:
+        st.markdown("**Explanation by AI**")
+        st.write(result.ai_explanation.text)
+        st.caption("An AI-generated hypothesis, not a verified fact.")
+        if st.button("Regenerate", key=f"regen-{result.event.event_id}"):
+            with st.spinner("Regenerating with AI…"):
+                try:
+                    _save_explanation(result, ai_explain(result), store, model="AI")
+                    st.rerun()
+                except GeminiError as exc:
+                    st.warning(f"AI explanation failed: {exc}")
+    else:
+        st.caption("Select an attack event to generate its explanation.")
 
 
 def _show_live_monitor(store: EventStore) -> None:
@@ -401,117 +456,65 @@ def _show_live_monitor(store: EventStore) -> None:
     )
     st.title("Live Attack Monitor")
     st.caption(
-        "デモ用ECショップのIPを監視対象として指定し、SQLインジェクションとブルートフォースの"
-        "ログイン攻撃をリアルタイムに検知します。監視できるのはローカル/プライベートIPだけです。"
+        "Point this at your local demo shop to detect SQL injection, brute-force and "
+        "other login attacks in real time. Only loopback/private IPs can be monitored."
     )
     state = _monitor_state()
-
-    controls = st.columns([3, 1, 1, 1])
-    target = controls[0].text_input(
-        "監視対象 IP / URL", value=state["target"] or "127.0.0.1:8080",
-        help="自分のデモ用ショップの宛先。例: 127.0.0.1:8080",
+    st.session_state["monitor_target"] = st.text_input(
+        "Monitor target IP / URL",
+        value=st.session_state.get("monitor_target", state["target"] or "127.0.0.1:8080"),
+        help="Your own demo shop address, e.g. 127.0.0.1:8080",
     )
-    bucket_seconds = int(controls[1].selectbox("グラフ粒度(秒)", [5, 10, 30, 60], index=1))
-    threshold = int(controls[2].number_input("ブルートフォース閾値", min_value=2, max_value=100, value=5))
-    window_minutes = int(controls[3].number_input("集計窓(分)", min_value=1, max_value=60, value=5))
 
-    actions = st.columns([1, 1, 1, 3])
-    refresh = actions[0].button("更新", type="primary")
-    state["live"] = actions[1].toggle("自動更新", value=state["live"])
-    interval = int(actions[2].selectbox("更新間隔(秒)", [2, 3, 5, 10], index=1))
-    if actions[3].button("監視データをリセット"):
-        # Keep the entered target (so it need not be re-typed) and just rebaseline.
-        st.session_state["live_monitor"] = {
-            "cursor": 0, "events": {}, "target": target.strip(), "live": False,
-            "last_error": "", "baseline_pending": True,
-        }
-        st.rerun()
+    _live_feed(store)
 
-    if refresh or state["live"]:
+    # Poll again on each full rerun so the table below always reflects the latest
+    # events (the fragment auto-refreshes the metrics/chart on its own cadence).
+    target = st.session_state.get("monitor_target", "").strip()
+    if target:
         try:
-            base_url = normalise_base_url(target)
-            added = _poll_into_state(store, base_url)
-            state["last_error"] = ""
-            if added < 0:
-                st.caption(f"接続先 {base_url} ・ 基準点を設定しました。これ以降の攻撃だけを表示します。")
-            else:
-                st.caption(f"接続先 {base_url} ・ 新規 {added} 件を取り込みました。")
-        except MonitorError as exc:
-            state["last_error"] = str(exc)
-        except (ImportDataError, OSError, sqlite3.Error) as exc:
-            state["last_error"] = f"取り込みに失敗しました: {exc}"
-    if state["last_error"]:
-        st.warning(state["last_error"])
+            _poll_into_state(store, normalise_base_url(target))
+        except (MonitorError, ImportDataError, OSError, sqlite3.Error):
+            pass
 
-    results = _monitor_results(store)
-    summary = summarise(
-        results, threshold=threshold, window_seconds=window_minutes * 60,
-        now=datetime.now(UTC),
+    results = _monitor_results()
+    attacks = sorted(
+        (result for result in results if result.rule_findings),
+        key=lambda result: result.event.timestamp,
+        reverse=True,
     )
-
-    metrics = st.columns(4)
-    metrics[0].metric("監視イベント", f"{summary.total_events:,}")
-    metrics[1].metric("SQLiログイン試行", f"{summary.sqli_login_attempts:,}")
-    metrics[2].metric("admin' OR 1=1 -- 試行", f"{summary.tautology_attempts:,}")
-    metrics[3].metric(f"失敗ログイン(直近{window_minutes}分)", f"{summary.failed_logins:,}")
-
-    if summary.brute_force_active:
-        hot = ", ".join(
-            f"{s.source} ({s.failed_logins}回)" for s in summary.brute_force_sources if s.over_threshold
-        )
-        st.error(
-            f"ブルートフォース検知: 閾値 {threshold} 回/{window_minutes}分 を超過 — {hot}",
-            icon="🚨",
-        )
-    elif summary.failed_logins:
-        st.info(f"失敗ログインを監視中（閾値 {threshold} 回/{window_minutes}分 未満）。")
-
-    st.subheader("時間帯別アクセス")
-    buckets = time_series(results, bucket_seconds=bucket_seconds)
-    if buckets:
-        frame = pd.DataFrame(
+    st.subheader(f"Detected attack events ({len(attacks)})")
+    if not attacks:
+        st.caption("No attacks detected yet. Start the demo shop and run the attack tool.")
+        return
+    st.caption("Select a row to see the AI explanation and countermeasures.")
+    table = pd.DataFrame(
+        [
             {
-                "総リクエスト": [b.total for b in buckets],
-                "失敗ログイン": [b.failed_logins for b in buckets],
-                "検知した攻撃": [b.attacks for b in buckets],
-            },
-            index=pd.DatetimeIndex(
-                [b.start.astimezone(UTC) for b in buckets], name="time (UTC)"
-            ),
-        )
-        st.line_chart(frame)
+                "Time (UTC)": result.event.timestamp.astimezone(UTC).strftime("%Y-%m-%d %H:%M:%S"),
+                "Source": result.event.source,
+                "Method": result.event.method or "-",
+                "Path": result.event.path,
+                "Attack": " / ".join(attack_labels(result)) or "Other",
+                "Severity": result.display_severity,
+            }
+            for result in attacks
+        ]
+    )
+    selection = st.dataframe(
+        table,
+        hide_index=True,
+        width="stretch",
+        on_select="rerun",
+        selection_mode="single-row",
+        key="attack_table",
+    )
+    rows = selection["selection"]["rows"]
+    if rows:
+        st.divider()
+        _render_attack_explanation(attacks[rows[0]], store)
     else:
-        st.caption("まだデータがありません。『更新』を押すか自動更新を有効にしてください。")
-
-    if summary.brute_force_sources:
-        st.subheader("送信元別の失敗ログイン（集計窓内）")
-        st.dataframe(
-            pd.DataFrame(
-                [
-                    {"Source": s.source, "失敗回数": s.failed_logins,
-                     "状態": "攻撃" if s.over_threshold else "監視中"}
-                    for s in summary.brute_force_sources
-                ]
-            ),
-            hide_index=True,
-            width="stretch",
-        )
-
-    attacks = [result for result in results if result.rule_findings]
-    st.subheader(f"検知した攻撃イベント（{len(attacks)}件）")
-    if attacks:
-        attacks.sort(key=lambda r: r.event.timestamp, reverse=True)
-        st.dataframe(
-            pd.DataFrame([_result_row(result) for result in attacks]).drop(columns=["Event ID"]),
-            hide_index=True,
-            width="stretch",
-        )
-    else:
-        st.caption("攻撃は検知されていません。")
-
-    if state["live"]:
-        time.sleep(interval)
-        st.rerun()
+        st.info("↑ Select an attack row to view its AI explanation and countermeasures.")
 
 
 def main() -> None:
@@ -519,7 +522,7 @@ def main() -> None:
     try:
         store = get_store(database_path)
     except (OSError, sqlite3.Error):
-        st.error("ローカルイベントDBを開けません。DATABASE_PATHとファイル権限を確認してください。")
+        st.error("Cannot open the local event database. Check DATABASE_PATH and file permissions.")
         st.stop()
 
     with st.sidebar:

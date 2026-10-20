@@ -20,7 +20,7 @@ from __future__ import annotations
 import ipaddress
 import json
 import socket
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
 from urllib.parse import parse_qs, unquote_plus, urlsplit
 from urllib.request import urlopen
@@ -70,18 +70,18 @@ def normalise_base_url(target: str, default_port: int = 8080) -> str:
     validated ``http://host:port`` base, rejecting non-local hosts."""
     target = target.strip()
     if not target:
-        raise MonitorError("監視対象のIP/URLを入力してください。")
+        raise MonitorError("Enter the IP / URL of the monitor target.")
     if "://" not in target:
         target = "http://" + target
     parts = urlsplit(target)
     if parts.scheme != "http":
-        raise MonitorError("監視はhttpのローカル宛先のみ対応です（httpsや外部は不可）。")
+        raise MonitorError("Only local http targets are supported (no https or external hosts).")
     host = parts.hostname or ""
     port = parts.port or default_port
     if not _host_is_local(host):
         raise MonitorError(
-            f"{host} はローカル/プライベートIPではありません。自分のデモ用ショップ"
-            "（127.0.0.1 など）だけを監視できます。"
+            f"{host} is not a loopback/private address. You can only monitor your own "
+            "local demo shop (e.g. 127.0.0.1)."
         )
     return f"http://{host}:{port}"
 
@@ -93,17 +93,19 @@ def poll_events(base_url: str, since: int = 0) -> tuple[list[dict], int]:
         with urlopen(url, timeout=POLL_TIMEOUT_SECONDS) as response:  # noqa: S310 (local http)
             raw = response.read(MAX_FEED_BYTES + 1)
     except OSError as exc:
-        raise MonitorError(f"監視対象に接続できません: {exc}") from exc
+        raise MonitorError(
+            "Cannot reach the monitor target. Is the demo shop running on this address?"
+        ) from exc
     if len(raw) > MAX_FEED_BYTES:
-        raise MonitorError("監視フィードが大きすぎます。")
+        raise MonitorError("The monitor feed is too large.")
     try:
         payload = json.loads(raw.decode("utf-8"))
         events = payload["events"]
         total = int(payload["total"])
     except (ValueError, KeyError, TypeError) as exc:
-        raise MonitorError("監視フィードの形式が不正です。") from exc
+        raise MonitorError("The monitor feed is malformed.") from exc
     if not isinstance(events, list):
-        raise MonitorError("監視フィードの形式が不正です。")
+        raise MonitorError("The monitor feed is malformed.")
     return events, total
 
 
@@ -140,6 +142,31 @@ def is_failed_login(result: DetectionResult) -> bool:
 
 def is_attack(result: DetectionResult) -> bool:
     return bool(result.rule_findings)
+
+
+# Attack types shown as metrics and as the lines of the time-series chart, in order.
+ATTACK_LABELS = ("SQL Injection", "Cross-Site Scripting", "Brute Force", "Path Traversal")
+_CATEGORY_TO_LABEL = {
+    "SQL injection": "SQL Injection",
+    "Cross-site scripting": "Cross-Site Scripting",
+    "Path traversal": "Path Traversal",
+    "Authentication anomaly": "Brute Force",
+}
+
+
+def attack_labels(result: DetectionResult) -> list[str]:
+    """Display attack types for an event, derived from its rule findings (ordered)."""
+    present = {
+        _CATEGORY_TO_LABEL[finding.category]
+        for finding in result.rule_findings
+        if finding.category in _CATEGORY_TO_LABEL
+    }
+    return [label for label in ATTACK_LABELS if label in present]
+
+
+def primary_attack(result: DetectionResult) -> str:
+    labels = attack_labels(result)
+    return labels[0] if labels else "Other"
 
 
 @dataclass(frozen=True, slots=True)

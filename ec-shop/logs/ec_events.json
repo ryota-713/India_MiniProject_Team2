@@ -1,710 +1,8 @@
 {
   "events": [
     {
-      "event_id": "ec-013858b3b974eddd",
-      "timestamp": "2026-10-20T06:29:51+00:00",
-      "source": "127.0.0.1",
-      "method": "POST",
-      "path": "/login?username=admin",
-      "status_code": 401,
-      "user_agent": "curl/8.16.0"
-    },
-    {
-      "event_id": "ec-6321309c589bee27",
-      "timestamp": "2026-10-20T06:29:52+00:00",
-      "source": "127.0.0.1",
-      "method": "POST",
-      "path": "/login?username=admin",
-      "status_code": 401,
-      "user_agent": "curl/8.16.0"
-    },
-    {
-      "event_id": "ec-2ecfee5ee116da67",
-      "timestamp": "2026-10-20T06:29:52+00:00",
-      "source": "127.0.0.1",
-      "method": "GET",
-      "path": "/login?error=1",
-      "status_code": 200,
-      "user_agent": "curl/8.16.0"
-    },
-    {
-      "event_id": "ec-c2baded7dec74709",
-      "timestamp": "2026-10-20T06:30:07+00:00",
-      "source": "127.0.0.1",
-      "method": "GET",
-      "path": "/login",
-      "status_code": 200,
-      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Claude/2.42304.2 Chrome/152.0.7977.149 Safari/537.36 MSIX"
-    },
-    {
-      "event_id": "ec-704c84c1eb37289d",
-      "timestamp": "2026-10-20T06:30:07+00:00",
-      "source": "127.0.0.1",
-      "method": "GET",
-      "path": "/static/style.css",
-      "status_code": 200,
-      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Claude/2.42304.2 Chrome/152.0.7977.149 Safari/537.36 MSIX"
-    },
-    {
-      "event_id": "ec-6de59bb1168014ac",
-      "timestamp": "2026-10-20T06:30:07+00:00",
-      "source": "127.0.0.1",
-      "method": "GET",
-      "path": "/favicon.ico",
-      "status_code": 404,
-      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Claude/2.42304.2 Chrome/152.0.7977.149 Safari/537.36 MSIX"
-    },
-    {
-      "event_id": "ec-d382ee4156d06f50",
-      "timestamp": "2026-10-20T06:30:15+00:00",
-      "source": "127.0.0.1",
-      "method": "POST",
-      "path": "/login?username=admin",
-      "status_code": 401,
-      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Claude/2.42304.2 Chrome/152.0.7977.149 Safari/537.36 MSIX"
-    },
-    {
-      "event_id": "ec-af3a6a0987172eb0",
-      "timestamp": "2026-10-20T06:30:15+00:00",
-      "source": "127.0.0.1",
-      "method": "GET",
-      "path": "/login?error=1",
-      "status_code": 200,
-      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Claude/2.42304.2 Chrome/152.0.7977.149 Safari/537.36 MSIX"
-    },
-    {
-      "event_id": "ec-5ad9939b81b19d0c",
-      "timestamp": "2026-10-20T06:30:15+00:00",
-      "source": "127.0.0.1",
-      "method": "GET",
-      "path": "/static/style.css",
-      "status_code": 200,
-      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Claude/2.42304.2 Chrome/152.0.7977.149 Safari/537.36 MSIX"
-    },
-    {
-      "event_id": "ec-5ac95012f334c86f",
-      "timestamp": "2026-10-20T06:30:15+00:00",
-      "source": "127.0.0.1",
-      "method": "GET",
-      "path": "/favicon.ico",
-      "status_code": 404,
-      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Claude/2.42304.2 Chrome/152.0.7977.149 Safari/537.36 MSIX"
-    },
-    {
-      "event_id": "ec-3a04c36cd8cfc32e",
-      "timestamp": "2026-10-20T06:30:33+00:00",
-      "source": "127.0.0.1",
-      "method": "POST",
-      "path": "/login?username=admin",
-      "status_code": 401,
-      "user_agent": "curl/8.16.0"
-    },
-    {
-      "event_id": "ec-37e9add37c609faa",
-      "timestamp": "2026-10-20T06:30:33+00:00",
-      "source": "127.0.0.1",
-      "method": "POST",
-      "path": "/login?username=admin",
-      "status_code": 401,
-      "user_agent": "curl/8.16.0"
-    },
-    {
-      "event_id": "ec-464e9ba39f8faa58",
-      "timestamp": "2026-10-20T06:30:33+00:00",
-      "source": "127.0.0.1",
-      "method": "POST",
-      "path": "/login?username=admin",
-      "status_code": 401,
-      "user_agent": "curl/8.16.0"
-    },
-    {
-      "event_id": "ec-f70455c3e0ad64a5",
-      "timestamp": "2026-10-20T06:30:33+00:00",
-      "source": "127.0.0.1",
-      "method": "POST",
-      "path": "/login?username=admin",
-      "status_code": 401,
-      "user_agent": "curl/8.16.0"
-    },
-    {
-      "event_id": "ec-b56071c2ec6e8a2a",
-      "timestamp": "2026-10-20T06:30:34+00:00",
-      "source": "127.0.0.1",
-      "method": "POST",
-      "path": "/login?username=admin",
-      "status_code": 401,
-      "user_agent": "curl/8.16.0"
-    },
-    {
-      "event_id": "ec-8940cd0efe367108",
-      "timestamp": "2026-10-20T06:30:34+00:00",
-      "source": "127.0.0.1",
-      "method": "POST",
-      "path": "/login?username=admin%27%20OR%201%3D1%20--",
-      "status_code": 303,
-      "user_agent": "curl/8.16.0"
-    },
-    {
-      "event_id": "ec-c0912f5cb0accb3c",
-      "timestamp": "2026-10-20T06:34:36+00:00",
-      "source": "127.0.0.1",
-      "method": "GET",
-      "path": "/",
-      "status_code": 303,
-      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36 Edg/155.0.0.0"
-    },
-    {
-      "event_id": "ec-cb91395682446a4c",
-      "timestamp": "2026-10-20T06:34:36+00:00",
-      "source": "127.0.0.1",
-      "method": "GET",
-      "path": "/login",
-      "status_code": 200,
-      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36 Edg/155.0.0.0"
-    },
-    {
-      "event_id": "ec-ebbeddb755041acc",
-      "timestamp": "2026-10-20T06:34:36+00:00",
-      "source": "127.0.0.1",
-      "method": "GET",
-      "path": "/static/style.css",
-      "status_code": 200,
-      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36 Edg/155.0.0.0"
-    },
-    {
-      "event_id": "ec-ef041e643e3f0220",
-      "timestamp": "2026-10-20T06:34:36+00:00",
-      "source": "127.0.0.1",
-      "method": "GET",
-      "path": "/favicon.ico",
-      "status_code": 404,
-      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36 Edg/155.0.0.0"
-    },
-    {
-      "event_id": "ec-792cc54b2df240ac",
-      "timestamp": "2026-10-20T06:36:00+00:00",
-      "source": "127.0.0.1",
-      "method": "POST",
-      "path": "/login?username=admin",
-      "status_code": 303,
-      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36 Edg/155.0.0.0"
-    },
-    {
-      "event_id": "ec-93fec880729009cf",
-      "timestamp": "2026-10-20T06:36:00+00:00",
-      "source": "127.0.0.1",
-      "method": "GET",
-      "path": "/home",
-      "status_code": 200,
-      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36 Edg/155.0.0.0"
-    },
-    {
-      "event_id": "ec-4da6f5db12b4f242",
-      "timestamp": "2026-10-20T06:36:00+00:00",
-      "source": "127.0.0.1",
-      "method": "GET",
-      "path": "/static/style.css",
-      "status_code": 200,
-      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36 Edg/155.0.0.0"
-    },
-    {
-      "event_id": "ec-17c435406aa1df5d",
-      "timestamp": "2026-10-20T06:36:01+00:00",
-      "source": "127.0.0.1",
-      "method": "GET",
-      "path": "/api/me",
-      "status_code": 200,
-      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36 Edg/155.0.0.0"
-    },
-    {
-      "event_id": "ec-04d1cbdbb0c6cf7c",
-      "timestamp": "2026-10-20T06:36:01+00:00",
-      "source": "127.0.0.1",
-      "method": "GET",
-      "path": "/api/products?category=All",
-      "status_code": 200,
-      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36 Edg/155.0.0.0"
-    },
-    {
-      "event_id": "ec-3992304a3ce32e9e",
-      "timestamp": "2026-10-20T06:36:12+00:00",
-      "source": "127.0.0.1",
-      "method": "GET",
-      "path": "/logout",
-      "status_code": 303,
-      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36 Edg/155.0.0.0"
-    },
-    {
-      "event_id": "ec-8bc941f02b31b8c9",
-      "timestamp": "2026-10-20T06:36:12+00:00",
-      "source": "127.0.0.1",
-      "method": "GET",
-      "path": "/login",
-      "status_code": 200,
-      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36 Edg/155.0.0.0"
-    },
-    {
-      "event_id": "ec-de101d8262a91aac",
-      "timestamp": "2026-10-20T06:36:12+00:00",
-      "source": "127.0.0.1",
-      "method": "GET",
-      "path": "/static/style.css",
-      "status_code": 200,
-      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36 Edg/155.0.0.0"
-    },
-    {
-      "event_id": "ec-5062462ab767743e",
-      "timestamp": "2026-10-20T06:36:22+00:00",
-      "source": "127.0.0.1",
-      "method": "POST",
-      "path": "/login?username=admin",
-      "status_code": 401,
-      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36 Edg/155.0.0.0"
-    },
-    {
-      "event_id": "ec-0102dcf2f11e01bd",
-      "timestamp": "2026-10-20T06:36:22+00:00",
-      "source": "127.0.0.1",
-      "method": "GET",
-      "path": "/login?error=1",
-      "status_code": 200,
-      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36 Edg/155.0.0.0"
-    },
-    {
-      "event_id": "ec-50344a01dc746328",
-      "timestamp": "2026-10-20T06:36:22+00:00",
-      "source": "127.0.0.1",
-      "method": "GET",
-      "path": "/static/style.css",
-      "status_code": 200,
-      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36 Edg/155.0.0.0"
-    },
-    {
-      "event_id": "ec-6ce38f7310cab9c1",
-      "timestamp": "2026-10-20T06:39:06+00:00",
-      "source": "127.0.0.1",
-      "method": "GET",
-      "path": "/login?error=1",
-      "status_code": 200,
-      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36 Edg/155.0.0.0"
-    },
-    {
-      "event_id": "ec-116f85270c2e217a",
-      "timestamp": "2026-10-20T06:39:06+00:00",
-      "source": "127.0.0.1",
-      "method": "GET",
-      "path": "/static/style.css",
-      "status_code": 200,
-      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36 Edg/155.0.0.0"
-    },
-    {
-      "event_id": "ec-61b906a8a4c624e7",
-      "timestamp": "2026-10-20T06:39:27+00:00",
-      "source": "127.0.0.1",
-      "method": "POST",
-      "path": "/login?username=admin%27%20OR%201%3D1%20--",
-      "status_code": 303,
-      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36 Edg/155.0.0.0"
-    },
-    {
-      "event_id": "ec-907d8c0bb06d77a5",
-      "timestamp": "2026-10-20T06:39:27+00:00",
-      "source": "127.0.0.1",
-      "method": "GET",
-      "path": "/home",
-      "status_code": 200,
-      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36 Edg/155.0.0.0"
-    },
-    {
-      "event_id": "ec-aea673598a366f59",
-      "timestamp": "2026-10-20T06:39:27+00:00",
-      "source": "127.0.0.1",
-      "method": "GET",
-      "path": "/static/style.css",
-      "status_code": 200,
-      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36 Edg/155.0.0.0"
-    },
-    {
-      "event_id": "ec-338ca381e8197adb",
-      "timestamp": "2026-10-20T06:39:27+00:00",
-      "source": "127.0.0.1",
-      "method": "GET",
-      "path": "/api/me",
-      "status_code": 200,
-      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36 Edg/155.0.0.0"
-    },
-    {
-      "event_id": "ec-1c4a29d1f8a6cf97",
-      "timestamp": "2026-10-20T06:39:27+00:00",
-      "source": "127.0.0.1",
-      "method": "GET",
-      "path": "/api/products?category=All",
-      "status_code": 200,
-      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36 Edg/155.0.0.0"
-    },
-    {
-      "event_id": "ec-828c8fa31f50b3c8",
-      "timestamp": "2026-10-20T06:39:52+00:00",
-      "source": "127.0.0.1",
-      "method": "GET",
-      "path": "/logout",
-      "status_code": 303,
-      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36 Edg/155.0.0.0"
-    },
-    {
-      "event_id": "ec-fb317c5b5557b690",
-      "timestamp": "2026-10-20T06:39:52+00:00",
-      "source": "127.0.0.1",
-      "method": "GET",
-      "path": "/login",
-      "status_code": 200,
-      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36 Edg/155.0.0.0"
-    },
-    {
-      "event_id": "ec-d36dae0e658b3f95",
-      "timestamp": "2026-10-20T06:39:52+00:00",
-      "source": "127.0.0.1",
-      "method": "GET",
-      "path": "/static/style.css",
-      "status_code": 200,
-      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36 Edg/155.0.0.0"
-    },
-    {
-      "event_id": "ec-422cf0cc797bce81",
-      "timestamp": "2026-10-20T06:39:59+00:00",
-      "source": "127.0.0.1",
-      "method": "POST",
-      "path": "/login?username=admin",
-      "status_code": 401,
-      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36 Edg/155.0.0.0"
-    },
-    {
-      "event_id": "ec-4fe411fbcb17d686",
-      "timestamp": "2026-10-20T06:39:59+00:00",
-      "source": "127.0.0.1",
-      "method": "GET",
-      "path": "/login?error=1",
-      "status_code": 200,
-      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36 Edg/155.0.0.0"
-    },
-    {
-      "event_id": "ec-a2803aeaf5e9c317",
-      "timestamp": "2026-10-20T06:39:59+00:00",
-      "source": "127.0.0.1",
-      "method": "GET",
-      "path": "/static/style.css",
-      "status_code": 200,
-      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36 Edg/155.0.0.0"
-    },
-    {
-      "event_id": "ec-80431a2e6e4b2f86",
-      "timestamp": "2026-10-20T06:40:02+00:00",
-      "source": "127.0.0.1",
-      "method": "POST",
-      "path": "/login?username=admin",
-      "status_code": 401,
-      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36 Edg/155.0.0.0"
-    },
-    {
-      "event_id": "ec-701e9beccd84f926",
-      "timestamp": "2026-10-20T06:40:02+00:00",
-      "source": "127.0.0.1",
-      "method": "GET",
-      "path": "/login?error=1",
-      "status_code": 200,
-      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36 Edg/155.0.0.0"
-    },
-    {
-      "event_id": "ec-b4832f11aa564406",
-      "timestamp": "2026-10-20T06:40:02+00:00",
-      "source": "127.0.0.1",
-      "method": "GET",
-      "path": "/static/style.css",
-      "status_code": 200,
-      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36 Edg/155.0.0.0"
-    },
-    {
-      "event_id": "ec-ecd4e3b0dd61e9b1",
-      "timestamp": "2026-10-20T06:40:07+00:00",
-      "source": "127.0.0.1",
-      "method": "POST",
-      "path": "/login?username=admin",
-      "status_code": 401,
-      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36 Edg/155.0.0.0"
-    },
-    {
-      "event_id": "ec-bcb6eb6013cf8366",
-      "timestamp": "2026-10-20T06:40:07+00:00",
-      "source": "127.0.0.1",
-      "method": "GET",
-      "path": "/login?error=1",
-      "status_code": 200,
-      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36 Edg/155.0.0.0"
-    },
-    {
-      "event_id": "ec-e6e5fcff792f643e",
-      "timestamp": "2026-10-20T06:40:07+00:00",
-      "source": "127.0.0.1",
-      "method": "GET",
-      "path": "/static/style.css",
-      "status_code": 200,
-      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36 Edg/155.0.0.0"
-    },
-    {
-      "event_id": "ec-e737aa9b129188ac",
-      "timestamp": "2026-10-20T06:40:11+00:00",
-      "source": "127.0.0.1",
-      "method": "POST",
-      "path": "/login?username=admin",
-      "status_code": 401,
-      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36 Edg/155.0.0.0"
-    },
-    {
-      "event_id": "ec-b0a0e8b89d127c53",
-      "timestamp": "2026-10-20T06:40:11+00:00",
-      "source": "127.0.0.1",
-      "method": "GET",
-      "path": "/login?error=1",
-      "status_code": 200,
-      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36 Edg/155.0.0.0"
-    },
-    {
-      "event_id": "ec-bc5df5ee94742a42",
-      "timestamp": "2026-10-20T06:40:11+00:00",
-      "source": "127.0.0.1",
-      "method": "GET",
-      "path": "/static/style.css",
-      "status_code": 200,
-      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36 Edg/155.0.0.0"
-    },
-    {
-      "event_id": "ec-00a4a241fa491e90",
-      "timestamp": "2026-10-20T06:40:18+00:00",
-      "source": "127.0.0.1",
-      "method": "POST",
-      "path": "/login?username=adminnpvnfskvnlfsa",
-      "status_code": 401,
-      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36 Edg/155.0.0.0"
-    },
-    {
-      "event_id": "ec-2542b3277d935312",
-      "timestamp": "2026-10-20T06:40:18+00:00",
-      "source": "127.0.0.1",
-      "method": "GET",
-      "path": "/login?error=1",
-      "status_code": 200,
-      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36 Edg/155.0.0.0"
-    },
-    {
-      "event_id": "ec-28cf6fc56f1aace7",
-      "timestamp": "2026-10-20T06:40:18+00:00",
-      "source": "127.0.0.1",
-      "method": "GET",
-      "path": "/static/style.css",
-      "status_code": 200,
-      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36 Edg/155.0.0.0"
-    },
-    {
-      "event_id": "ec-7fe1f7c06aaf139d",
-      "timestamp": "2026-10-20T06:50:18+00:00",
-      "source": "127.0.0.1",
-      "method": "POST",
-      "path": "/login?username=admin",
-      "status_code": 401,
-      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36 Edg/155.0.0.0"
-    },
-    {
-      "event_id": "ec-71a94c7ccaddb4f2",
-      "timestamp": "2026-10-20T06:50:18+00:00",
-      "source": "127.0.0.1",
-      "method": "GET",
-      "path": "/login?error=1",
-      "status_code": 200,
-      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36 Edg/155.0.0.0"
-    },
-    {
-      "event_id": "ec-6a7222da4934175c",
-      "timestamp": "2026-10-20T06:50:18+00:00",
-      "source": "127.0.0.1",
-      "method": "GET",
-      "path": "/static/style.css",
-      "status_code": 200,
-      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36 Edg/155.0.0.0"
-    },
-    {
-      "event_id": "ec-7ea3fb37534f007a",
-      "timestamp": "2026-10-20T06:50:24+00:00",
-      "source": "127.0.0.1",
-      "method": "POST",
-      "path": "/login?username=admin",
-      "status_code": 303,
-      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36 Edg/155.0.0.0"
-    },
-    {
-      "event_id": "ec-d747181df737b643",
-      "timestamp": "2026-10-20T06:50:24+00:00",
-      "source": "127.0.0.1",
-      "method": "GET",
-      "path": "/home",
-      "status_code": 200,
-      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36 Edg/155.0.0.0"
-    },
-    {
-      "event_id": "ec-eec48289cd3bc2d8",
-      "timestamp": "2026-10-20T06:50:24+00:00",
-      "source": "127.0.0.1",
-      "method": "GET",
-      "path": "/static/style.css",
-      "status_code": 200,
-      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36 Edg/155.0.0.0"
-    },
-    {
-      "event_id": "ec-35c7ddb756bc6b61",
-      "timestamp": "2026-10-20T06:50:24+00:00",
-      "source": "127.0.0.1",
-      "method": "GET",
-      "path": "/api/me",
-      "status_code": 200,
-      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36 Edg/155.0.0.0"
-    },
-    {
-      "event_id": "ec-15b8b54eb1168f14",
-      "timestamp": "2026-10-20T06:50:24+00:00",
-      "source": "127.0.0.1",
-      "method": "GET",
-      "path": "/api/products?category=All",
-      "status_code": 200,
-      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36 Edg/155.0.0.0"
-    },
-    {
-      "event_id": "ec-af285c5f0281fd91",
-      "timestamp": "2026-10-20T06:52:23+00:00",
-      "source": "127.0.0.1",
-      "method": "GET",
-      "path": "/logout",
-      "status_code": 303,
-      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36 Edg/155.0.0.0"
-    },
-    {
-      "event_id": "ec-b85d67eac72818b4",
-      "timestamp": "2026-10-20T06:52:23+00:00",
-      "source": "127.0.0.1",
-      "method": "GET",
-      "path": "/login",
-      "status_code": 200,
-      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36 Edg/155.0.0.0"
-    },
-    {
-      "event_id": "ec-83bef69048105175",
-      "timestamp": "2026-10-20T06:52:23+00:00",
-      "source": "127.0.0.1",
-      "method": "GET",
-      "path": "/static/style.css",
-      "status_code": 200,
-      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36 Edg/155.0.0.0"
-    },
-    {
-      "event_id": "ec-36af4e1f6af6729c",
-      "timestamp": "2026-10-20T06:52:35+00:00",
-      "source": "127.0.0.1",
-      "method": "POST",
-      "path": "/login?username=admin",
-      "status_code": 401,
-      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36 Edg/155.0.0.0"
-    },
-    {
-      "event_id": "ec-e19c5b31bb8f5f34",
-      "timestamp": "2026-10-20T06:52:35+00:00",
-      "source": "127.0.0.1",
-      "method": "GET",
-      "path": "/login?error=1",
-      "status_code": 200,
-      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36 Edg/155.0.0.0"
-    },
-    {
-      "event_id": "ec-01018ada084b74e6",
-      "timestamp": "2026-10-20T06:52:35+00:00",
-      "source": "127.0.0.1",
-      "method": "GET",
-      "path": "/static/style.css",
-      "status_code": 200,
-      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36 Edg/155.0.0.0"
-    },
-    {
-      "event_id": "ec-e415b0b995bba09d",
-      "timestamp": "2026-10-20T06:53:21+00:00",
-      "source": "127.0.0.1",
-      "method": "POST",
-      "path": "/login?username=admin%27%20OR%201%3D1%20--",
-      "status_code": 303,
-      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36 Edg/155.0.0.0"
-    },
-    {
-      "event_id": "ec-0c16552ab9bbaa67",
-      "timestamp": "2026-10-20T06:53:21+00:00",
-      "source": "127.0.0.1",
-      "method": "GET",
-      "path": "/home",
-      "status_code": 200,
-      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36 Edg/155.0.0.0"
-    },
-    {
-      "event_id": "ec-95e547ff8b5f870b",
-      "timestamp": "2026-10-20T06:53:21+00:00",
-      "source": "127.0.0.1",
-      "method": "GET",
-      "path": "/static/style.css",
-      "status_code": 200,
-      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36 Edg/155.0.0.0"
-    },
-    {
-      "event_id": "ec-f1d6a286e6514684",
-      "timestamp": "2026-10-20T06:53:21+00:00",
-      "source": "127.0.0.1",
-      "method": "GET",
-      "path": "/api/me",
-      "status_code": 200,
-      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36 Edg/155.0.0.0"
-    },
-    {
-      "event_id": "ec-386823b14c443933",
-      "timestamp": "2026-10-20T06:53:21+00:00",
-      "source": "127.0.0.1",
-      "method": "GET",
-      "path": "/api/products?category=All",
-      "status_code": 200,
-      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36 Edg/155.0.0.0"
-    },
-    {
-      "event_id": "ec-ff5c66ea670269d1",
-      "timestamp": "2026-10-20T06:55:07+00:00",
-      "source": "127.0.0.1",
-      "method": "GET",
-      "path": "/logout",
-      "status_code": 303,
-      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36 Edg/155.0.0.0"
-    },
-    {
-      "event_id": "ec-7f90efdbd1bded7e",
-      "timestamp": "2026-10-20T06:55:07+00:00",
-      "source": "127.0.0.1",
-      "method": "GET",
-      "path": "/login",
-      "status_code": 200,
-      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36 Edg/155.0.0.0"
-    },
-    {
-      "event_id": "ec-28a9699f204da12d",
-      "timestamp": "2026-10-20T06:55:07+00:00",
-      "source": "127.0.0.1",
-      "method": "GET",
-      "path": "/static/style.css",
-      "status_code": 200,
-      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36 Edg/155.0.0.0"
-    },
-    {
-      "event_id": "ec-c8cd42ffb285f1d9",
-      "timestamp": "2026-10-20T06:55:31+00:00",
+      "event_id": "ec-918650f5b5318d52",
+      "timestamp": "2026-10-20T14:34:13+00:00",
       "source": "127.0.0.1",
       "method": "POST",
       "path": "/login?username=admin",
@@ -712,8 +10,8 @@
       "user_agent": "Python-urllib/3.13"
     },
     {
-      "event_id": "ec-de476ba4652b2d58",
-      "timestamp": "2026-10-20T06:55:31+00:00",
+      "event_id": "ec-387002d83732bba1",
+      "timestamp": "2026-10-20T14:34:13+00:00",
       "source": "127.0.0.1",
       "method": "GET",
       "path": "/login?error=1",
@@ -721,8 +19,8 @@
       "user_agent": "Python-urllib/3.13"
     },
     {
-      "event_id": "ec-60943978d0c4d2e9",
-      "timestamp": "2026-10-20T06:55:31+00:00",
+      "event_id": "ec-78908683b9685918",
+      "timestamp": "2026-10-20T14:34:14+00:00",
       "source": "127.0.0.1",
       "method": "POST",
       "path": "/login?username=admin",
@@ -730,8 +28,8 @@
       "user_agent": "Python-urllib/3.13"
     },
     {
-      "event_id": "ec-52e58f8b7317de0e",
-      "timestamp": "2026-10-20T06:55:31+00:00",
+      "event_id": "ec-8625d06dd2692571",
+      "timestamp": "2026-10-20T14:34:14+00:00",
       "source": "127.0.0.1",
       "method": "GET",
       "path": "/login?error=1",
@@ -739,8 +37,8 @@
       "user_agent": "Python-urllib/3.13"
     },
     {
-      "event_id": "ec-d4fd06d547c924cf",
-      "timestamp": "2026-10-20T06:55:31+00:00",
+      "event_id": "ec-281d49d535b8f312",
+      "timestamp": "2026-10-20T14:34:14+00:00",
       "source": "127.0.0.1",
       "method": "POST",
       "path": "/login?username=admin",
@@ -748,8 +46,8 @@
       "user_agent": "Python-urllib/3.13"
     },
     {
-      "event_id": "ec-00c99a63bcc6ee57",
-      "timestamp": "2026-10-20T06:55:31+00:00",
+      "event_id": "ec-139d1494ba019a71",
+      "timestamp": "2026-10-20T14:34:14+00:00",
       "source": "127.0.0.1",
       "method": "GET",
       "path": "/login?error=1",
@@ -757,8 +55,8 @@
       "user_agent": "Python-urllib/3.13"
     },
     {
-      "event_id": "ec-44e193873477a3a7",
-      "timestamp": "2026-10-20T06:55:31+00:00",
+      "event_id": "ec-b0a794224e8f958b",
+      "timestamp": "2026-10-20T14:34:14+00:00",
       "source": "127.0.0.1",
       "method": "POST",
       "path": "/login?username=admin",
@@ -766,8 +64,8 @@
       "user_agent": "Python-urllib/3.13"
     },
     {
-      "event_id": "ec-6a56fac08c033119",
-      "timestamp": "2026-10-20T06:55:31+00:00",
+      "event_id": "ec-31c774405dab1db7",
+      "timestamp": "2026-10-20T14:34:14+00:00",
       "source": "127.0.0.1",
       "method": "GET",
       "path": "/login?error=1",
@@ -775,8 +73,8 @@
       "user_agent": "Python-urllib/3.13"
     },
     {
-      "event_id": "ec-d88762ebb4f61980",
-      "timestamp": "2026-10-20T06:55:32+00:00",
+      "event_id": "ec-a086806e9e8abe29",
+      "timestamp": "2026-10-20T14:34:14+00:00",
       "source": "127.0.0.1",
       "method": "POST",
       "path": "/login?username=admin",
@@ -784,8 +82,8 @@
       "user_agent": "Python-urllib/3.13"
     },
     {
-      "event_id": "ec-2228b2621338593c",
-      "timestamp": "2026-10-20T06:55:32+00:00",
+      "event_id": "ec-b7870b1e408afd8f",
+      "timestamp": "2026-10-20T14:34:14+00:00",
       "source": "127.0.0.1",
       "method": "GET",
       "path": "/login?error=1",
@@ -793,8 +91,8 @@
       "user_agent": "Python-urllib/3.13"
     },
     {
-      "event_id": "ec-6bc5cbe210bf40cb",
-      "timestamp": "2026-10-20T06:55:32+00:00",
+      "event_id": "ec-f8ffa05b3c4a4832",
+      "timestamp": "2026-10-20T14:34:14+00:00",
       "source": "127.0.0.1",
       "method": "POST",
       "path": "/login?username=admin",
@@ -802,8 +100,8 @@
       "user_agent": "Python-urllib/3.13"
     },
     {
-      "event_id": "ec-ebda552720f2b384",
-      "timestamp": "2026-10-20T06:55:32+00:00",
+      "event_id": "ec-fea9613d9af78108",
+      "timestamp": "2026-10-20T14:34:14+00:00",
       "source": "127.0.0.1",
       "method": "GET",
       "path": "/login?error=1",
@@ -811,8 +109,8 @@
       "user_agent": "Python-urllib/3.13"
     },
     {
-      "event_id": "ec-a25fe29f1c997a92",
-      "timestamp": "2026-10-20T06:55:32+00:00",
+      "event_id": "ec-1432db96f7a82cd6",
+      "timestamp": "2026-10-20T14:34:14+00:00",
       "source": "127.0.0.1",
       "method": "POST",
       "path": "/login?username=admin",
@@ -820,8 +118,8 @@
       "user_agent": "Python-urllib/3.13"
     },
     {
-      "event_id": "ec-402aea12b592b9b5",
-      "timestamp": "2026-10-20T06:55:32+00:00",
+      "event_id": "ec-66820ba3053740ab",
+      "timestamp": "2026-10-20T14:34:15+00:00",
       "source": "127.0.0.1",
       "method": "GET",
       "path": "/login?error=1",
@@ -829,8 +127,8 @@
       "user_agent": "Python-urllib/3.13"
     },
     {
-      "event_id": "ec-836bc46fc29b4279",
-      "timestamp": "2026-10-20T06:55:32+00:00",
+      "event_id": "ec-a871a40db2a5a537",
+      "timestamp": "2026-10-20T14:34:15+00:00",
       "source": "127.0.0.1",
       "method": "POST",
       "path": "/login?username=admin",
@@ -838,8 +136,8 @@
       "user_agent": "Python-urllib/3.13"
     },
     {
-      "event_id": "ec-0ea9a9ad36510b05",
-      "timestamp": "2026-10-20T06:55:32+00:00",
+      "event_id": "ec-b2af02827a98169c",
+      "timestamp": "2026-10-20T14:34:15+00:00",
       "source": "127.0.0.1",
       "method": "GET",
       "path": "/login?error=1",
@@ -847,8 +145,8 @@
       "user_agent": "Python-urllib/3.13"
     },
     {
-      "event_id": "ec-31c34505ad3662d8",
-      "timestamp": "2026-10-20T06:55:32+00:00",
+      "event_id": "ec-0b75fa50b571cf6e",
+      "timestamp": "2026-10-20T14:34:15+00:00",
       "source": "127.0.0.1",
       "method": "POST",
       "path": "/login?username=admin",
@@ -856,8 +154,8 @@
       "user_agent": "Python-urllib/3.13"
     },
     {
-      "event_id": "ec-25b4347c616c443d",
-      "timestamp": "2026-10-20T06:55:32+00:00",
+      "event_id": "ec-95c8373532917f79",
+      "timestamp": "2026-10-20T14:34:15+00:00",
       "source": "127.0.0.1",
       "method": "GET",
       "path": "/login?error=1",
@@ -865,8 +163,8 @@
       "user_agent": "Python-urllib/3.13"
     },
     {
-      "event_id": "ec-66510e83ffb60820",
-      "timestamp": "2026-10-20T06:55:33+00:00",
+      "event_id": "ec-bce13d246bb2d7a3",
+      "timestamp": "2026-10-20T14:34:15+00:00",
       "source": "127.0.0.1",
       "method": "POST",
       "path": "/login?username=admin",
@@ -874,8 +172,8 @@
       "user_agent": "Python-urllib/3.13"
     },
     {
-      "event_id": "ec-4cb94917e557bd49",
-      "timestamp": "2026-10-20T06:55:33+00:00",
+      "event_id": "ec-b32a9f603731e3b2",
+      "timestamp": "2026-10-20T14:34:15+00:00",
       "source": "127.0.0.1",
       "method": "GET",
       "path": "/login?error=1",
@@ -883,8 +181,8 @@
       "user_agent": "Python-urllib/3.13"
     },
     {
-      "event_id": "ec-7f5e15f5479d59e2",
-      "timestamp": "2026-10-20T06:55:33+00:00",
+      "event_id": "ec-31ccebe80f5362d5",
+      "timestamp": "2026-10-20T14:34:15+00:00",
       "source": "127.0.0.1",
       "method": "POST",
       "path": "/login?username=admin",
@@ -892,8 +190,8 @@
       "user_agent": "Python-urllib/3.13"
     },
     {
-      "event_id": "ec-b4ca2cfd6833bb80",
-      "timestamp": "2026-10-20T06:55:33+00:00",
+      "event_id": "ec-2ec08114d6ed9024",
+      "timestamp": "2026-10-20T14:34:15+00:00",
       "source": "127.0.0.1",
       "method": "GET",
       "path": "/login?error=1",
@@ -901,8 +199,8 @@
       "user_agent": "Python-urllib/3.13"
     },
     {
-      "event_id": "ec-f0303e84bbda9956",
-      "timestamp": "2026-10-20T06:55:33+00:00",
+      "event_id": "ec-f3decb89744d1655",
+      "timestamp": "2026-10-20T14:34:16+00:00",
       "source": "127.0.0.1",
       "method": "POST",
       "path": "/login?username=admin",
@@ -910,8 +208,8 @@
       "user_agent": "Python-urllib/3.13"
     },
     {
-      "event_id": "ec-2c449083c75fac06",
-      "timestamp": "2026-10-20T06:55:33+00:00",
+      "event_id": "ec-e6f7e27c61abac03",
+      "timestamp": "2026-10-20T14:34:16+00:00",
       "source": "127.0.0.1",
       "method": "GET",
       "path": "/login?error=1",
@@ -919,8 +217,8 @@
       "user_agent": "Python-urllib/3.13"
     },
     {
-      "event_id": "ec-599a7a0c2bacdd6a",
-      "timestamp": "2026-10-20T06:55:33+00:00",
+      "event_id": "ec-9c691bb0e1bee412",
+      "timestamp": "2026-10-20T14:34:16+00:00",
       "source": "127.0.0.1",
       "method": "POST",
       "path": "/login?username=admin",
@@ -928,8 +226,8 @@
       "user_agent": "Python-urllib/3.13"
     },
     {
-      "event_id": "ec-eb9e5b413bf2f758",
-      "timestamp": "2026-10-20T06:55:33+00:00",
+      "event_id": "ec-7e10c60ec986ee88",
+      "timestamp": "2026-10-20T14:34:16+00:00",
       "source": "127.0.0.1",
       "method": "GET",
       "path": "/login?error=1",
@@ -937,8 +235,8 @@
       "user_agent": "Python-urllib/3.13"
     },
     {
-      "event_id": "ec-afbb2acd9e3b0455",
-      "timestamp": "2026-10-20T06:55:33+00:00",
+      "event_id": "ec-4b22a68f7bcdd3fc",
+      "timestamp": "2026-10-20T14:34:16+00:00",
       "source": "127.0.0.1",
       "method": "POST",
       "path": "/login?username=admin",
@@ -946,8 +244,8 @@
       "user_agent": "Python-urllib/3.13"
     },
     {
-      "event_id": "ec-b53b69b02e319a69",
-      "timestamp": "2026-10-20T06:55:33+00:00",
+      "event_id": "ec-5d5eed23b8a35ec2",
+      "timestamp": "2026-10-20T14:34:16+00:00",
       "source": "127.0.0.1",
       "method": "GET",
       "path": "/login?error=1",
@@ -955,8 +253,8 @@
       "user_agent": "Python-urllib/3.13"
     },
     {
-      "event_id": "ec-e1063c91ed2e0e26",
-      "timestamp": "2026-10-20T06:55:34+00:00",
+      "event_id": "ec-a4656a906c1b2485",
+      "timestamp": "2026-10-20T14:34:16+00:00",
       "source": "127.0.0.1",
       "method": "POST",
       "path": "/login?username=admin",
@@ -964,8 +262,8 @@
       "user_agent": "Python-urllib/3.13"
     },
     {
-      "event_id": "ec-f9ce543ad0bddbc6",
-      "timestamp": "2026-10-20T06:55:34+00:00",
+      "event_id": "ec-45bfe50e0de6f16a",
+      "timestamp": "2026-10-20T14:34:16+00:00",
       "source": "127.0.0.1",
       "method": "GET",
       "path": "/login?error=1",
@@ -973,8 +271,8 @@
       "user_agent": "Python-urllib/3.13"
     },
     {
-      "event_id": "ec-ac3f0fbc63f847cf",
-      "timestamp": "2026-10-20T06:55:34+00:00",
+      "event_id": "ec-e22463c39dd68c02",
+      "timestamp": "2026-10-20T14:34:16+00:00",
       "source": "127.0.0.1",
       "method": "POST",
       "path": "/login?username=admin%27%20OR%201%3D1%20--",
@@ -982,8 +280,8 @@
       "user_agent": "Python-urllib/3.13"
     },
     {
-      "event_id": "ec-e9f6ca8de274f7e4",
-      "timestamp": "2026-10-20T06:55:34+00:00",
+      "event_id": "ec-28683f0e67ee331d",
+      "timestamp": "2026-10-20T14:34:16+00:00",
       "source": "127.0.0.1",
       "method": "GET",
       "path": "/home",
@@ -991,8 +289,8 @@
       "user_agent": "Python-urllib/3.13"
     },
     {
-      "event_id": "ec-f77601df65123571",
-      "timestamp": "2026-10-20T06:55:34+00:00",
+      "event_id": "ec-a90b800fed48a894",
+      "timestamp": "2026-10-20T14:34:16+00:00",
       "source": "127.0.0.1",
       "method": "GET",
       "path": "/login",
@@ -1000,8 +298,8 @@
       "user_agent": "Python-urllib/3.13"
     },
     {
-      "event_id": "ec-9641f7fbed968ce4",
-      "timestamp": "2026-10-20T06:55:34+00:00",
+      "event_id": "ec-4f77e5d59f39efee",
+      "timestamp": "2026-10-20T14:34:17+00:00",
       "source": "127.0.0.1",
       "method": "POST",
       "path": "/login?username=admin",
@@ -1009,8 +307,8 @@
       "user_agent": "Python-urllib/3.13"
     },
     {
-      "event_id": "ec-9cf313b982a98164",
-      "timestamp": "2026-10-20T06:55:34+00:00",
+      "event_id": "ec-7dfa103721dedbd2",
+      "timestamp": "2026-10-20T14:34:17+00:00",
       "source": "127.0.0.1",
       "method": "GET",
       "path": "/login?error=1",
@@ -1018,8 +316,8 @@
       "user_agent": "Python-urllib/3.13"
     },
     {
-      "event_id": "ec-86e74f0786526e9a",
-      "timestamp": "2026-10-20T06:55:34+00:00",
+      "event_id": "ec-6eac96d9e1cf5a89",
+      "timestamp": "2026-10-20T14:34:17+00:00",
       "source": "127.0.0.1",
       "method": "POST",
       "path": "/login?username=admin",
@@ -1027,8 +325,8 @@
       "user_agent": "Python-urllib/3.13"
     },
     {
-      "event_id": "ec-6346f31ad158cd15",
-      "timestamp": "2026-10-20T06:55:34+00:00",
+      "event_id": "ec-7bf03ba857fc58d1",
+      "timestamp": "2026-10-20T14:34:17+00:00",
       "source": "127.0.0.1",
       "method": "GET",
       "path": "/login?error=1",
@@ -1036,8 +334,8 @@
       "user_agent": "Python-urllib/3.13"
     },
     {
-      "event_id": "ec-8bac1db7628da475",
-      "timestamp": "2026-10-20T06:55:34+00:00",
+      "event_id": "ec-5ae1e7825d9d7a57",
+      "timestamp": "2026-10-20T14:34:17+00:00",
       "source": "127.0.0.1",
       "method": "POST",
       "path": "/login?username=admin",
@@ -1045,8 +343,8 @@
       "user_agent": "Python-urllib/3.13"
     },
     {
-      "event_id": "ec-2ee45b74a36b854c",
-      "timestamp": "2026-10-20T06:55:34+00:00",
+      "event_id": "ec-a0a9c75e77098ae9",
+      "timestamp": "2026-10-20T14:34:17+00:00",
       "source": "127.0.0.1",
       "method": "GET",
       "path": "/login?error=1",
@@ -1054,8 +352,8 @@
       "user_agent": "Python-urllib/3.13"
     },
     {
-      "event_id": "ec-da6cd457a325ab21",
-      "timestamp": "2026-10-20T06:55:35+00:00",
+      "event_id": "ec-9cb07d9a352b3136",
+      "timestamp": "2026-10-20T14:34:17+00:00",
       "source": "127.0.0.1",
       "method": "POST",
       "path": "/login?username=admin",
@@ -1063,8 +361,8 @@
       "user_agent": "Python-urllib/3.13"
     },
     {
-      "event_id": "ec-fa1b3827810f2f24",
-      "timestamp": "2026-10-20T06:55:35+00:00",
+      "event_id": "ec-acdbd2bb1dfb431e",
+      "timestamp": "2026-10-20T14:34:17+00:00",
       "source": "127.0.0.1",
       "method": "GET",
       "path": "/login?error=1",
@@ -1072,8 +370,8 @@
       "user_agent": "Python-urllib/3.13"
     },
     {
-      "event_id": "ec-605dd2afe19bb42e",
-      "timestamp": "2026-10-20T06:55:35+00:00",
+      "event_id": "ec-7804bdb7fcfec3ce",
+      "timestamp": "2026-10-20T14:34:17+00:00",
       "source": "127.0.0.1",
       "method": "POST",
       "path": "/login?username=admin",
@@ -1081,8 +379,8 @@
       "user_agent": "Python-urllib/3.13"
     },
     {
-      "event_id": "ec-2572e28dabea2990",
-      "timestamp": "2026-10-20T06:55:35+00:00",
+      "event_id": "ec-dd5bfc2d87950c38",
+      "timestamp": "2026-10-20T14:34:17+00:00",
       "source": "127.0.0.1",
       "method": "GET",
       "path": "/login?error=1",
@@ -1090,8 +388,8 @@
       "user_agent": "Python-urllib/3.13"
     },
     {
-      "event_id": "ec-6a1b85b6d19df73b",
-      "timestamp": "2026-10-20T06:55:35+00:00",
+      "event_id": "ec-f9175377fef51256",
+      "timestamp": "2026-10-20T14:34:18+00:00",
       "source": "127.0.0.1",
       "method": "POST",
       "path": "/login?username=admin",
@@ -1099,8 +397,8 @@
       "user_agent": "Python-urllib/3.13"
     },
     {
-      "event_id": "ec-6d7856549719ffe9",
-      "timestamp": "2026-10-20T06:55:35+00:00",
+      "event_id": "ec-86150b9258b20dd6",
+      "timestamp": "2026-10-20T14:34:18+00:00",
       "source": "127.0.0.1",
       "method": "GET",
       "path": "/login?error=1",
@@ -1108,8 +406,8 @@
       "user_agent": "Python-urllib/3.13"
     },
     {
-      "event_id": "ec-424cd6501e0a809c",
-      "timestamp": "2026-10-20T06:55:35+00:00",
+      "event_id": "ec-5258ec7fe76989fe",
+      "timestamp": "2026-10-20T14:34:18+00:00",
       "source": "127.0.0.1",
       "method": "POST",
       "path": "/login?username=admin",
@@ -1117,8 +415,8 @@
       "user_agent": "Python-urllib/3.13"
     },
     {
-      "event_id": "ec-a0d9aad358b7d7c4",
-      "timestamp": "2026-10-20T06:55:35+00:00",
+      "event_id": "ec-8cbb3d706da18c46",
+      "timestamp": "2026-10-20T14:34:18+00:00",
       "source": "127.0.0.1",
       "method": "GET",
       "path": "/login?error=1",
@@ -1126,8 +424,8 @@
       "user_agent": "Python-urllib/3.13"
     },
     {
-      "event_id": "ec-10c57231c60351da",
-      "timestamp": "2026-10-20T06:55:35+00:00",
+      "event_id": "ec-486cbff18bca4e68",
+      "timestamp": "2026-10-20T14:34:18+00:00",
       "source": "127.0.0.1",
       "method": "POST",
       "path": "/login?username=admin",
@@ -1135,8 +433,8 @@
       "user_agent": "Python-urllib/3.13"
     },
     {
-      "event_id": "ec-deedc07fc66ad290",
-      "timestamp": "2026-10-20T06:55:35+00:00",
+      "event_id": "ec-c4e8e3c5402f0638",
+      "timestamp": "2026-10-20T14:34:18+00:00",
       "source": "127.0.0.1",
       "method": "GET",
       "path": "/login?error=1",
@@ -1144,8 +442,8 @@
       "user_agent": "Python-urllib/3.13"
     },
     {
-      "event_id": "ec-9c40eee995e9b039",
-      "timestamp": "2026-10-20T06:55:36+00:00",
+      "event_id": "ec-35e525bbb5b656a1",
+      "timestamp": "2026-10-20T14:34:18+00:00",
       "source": "127.0.0.1",
       "method": "POST",
       "path": "/login?username=admin",
@@ -1153,8 +451,8 @@
       "user_agent": "Python-urllib/3.13"
     },
     {
-      "event_id": "ec-4f4668d5dc544cfe",
-      "timestamp": "2026-10-20T06:55:36+00:00",
+      "event_id": "ec-c547fff81a793731",
+      "timestamp": "2026-10-20T14:34:18+00:00",
       "source": "127.0.0.1",
       "method": "GET",
       "path": "/login?error=1",
@@ -1162,8 +460,8 @@
       "user_agent": "Python-urllib/3.13"
     },
     {
-      "event_id": "ec-6742791e4ac0dd85",
-      "timestamp": "2026-10-20T06:55:36+00:00",
+      "event_id": "ec-11c58822fde1c375",
+      "timestamp": "2026-10-20T14:34:18+00:00",
       "source": "127.0.0.1",
       "method": "POST",
       "path": "/login?username=admin",
@@ -1171,8 +469,8 @@
       "user_agent": "Python-urllib/3.13"
     },
     {
-      "event_id": "ec-2e93f72e8acf86d3",
-      "timestamp": "2026-10-20T06:55:36+00:00",
+      "event_id": "ec-092d152c57b9ea2a",
+      "timestamp": "2026-10-20T14:34:18+00:00",
       "source": "127.0.0.1",
       "method": "GET",
       "path": "/login?error=1",
@@ -1180,8 +478,8 @@
       "user_agent": "Python-urllib/3.13"
     },
     {
-      "event_id": "ec-9ca837885d505f84",
-      "timestamp": "2026-10-20T06:55:36+00:00",
+      "event_id": "ec-3e8f3f764cadb2b4",
+      "timestamp": "2026-10-20T14:34:19+00:00",
       "source": "127.0.0.1",
       "method": "POST",
       "path": "/login?username=admin",
@@ -1189,8 +487,8 @@
       "user_agent": "Python-urllib/3.13"
     },
     {
-      "event_id": "ec-141cd4c454a187c6",
-      "timestamp": "2026-10-20T06:55:36+00:00",
+      "event_id": "ec-9336b4189986a70c",
+      "timestamp": "2026-10-20T14:34:19+00:00",
       "source": "127.0.0.1",
       "method": "GET",
       "path": "/login?error=1",
@@ -1198,8 +496,8 @@
       "user_agent": "Python-urllib/3.13"
     },
     {
-      "event_id": "ec-33a47cd1eee40abc",
-      "timestamp": "2026-10-20T06:55:36+00:00",
+      "event_id": "ec-84a3b4ac4e4c9905",
+      "timestamp": "2026-10-20T14:34:19+00:00",
       "source": "127.0.0.1",
       "method": "POST",
       "path": "/login?username=admin",
@@ -1207,8 +505,8 @@
       "user_agent": "Python-urllib/3.13"
     },
     {
-      "event_id": "ec-cd25c5f140807508",
-      "timestamp": "2026-10-20T06:55:36+00:00",
+      "event_id": "ec-ab4040bceab19a76",
+      "timestamp": "2026-10-20T14:34:19+00:00",
       "source": "127.0.0.1",
       "method": "GET",
       "path": "/login?error=1",
@@ -1216,8 +514,8 @@
       "user_agent": "Python-urllib/3.13"
     },
     {
-      "event_id": "ec-aea355eac6a7ab87",
-      "timestamp": "2026-10-20T06:55:36+00:00",
+      "event_id": "ec-a3bb698f122f702b",
+      "timestamp": "2026-10-20T14:34:19+00:00",
       "source": "127.0.0.1",
       "method": "POST",
       "path": "/login?username=admin",
@@ -1225,8 +523,8 @@
       "user_agent": "Python-urllib/3.13"
     },
     {
-      "event_id": "ec-7d9ac27e68c75201",
-      "timestamp": "2026-10-20T06:55:36+00:00",
+      "event_id": "ec-030fec039fbe93fa",
+      "timestamp": "2026-10-20T14:34:19+00:00",
       "source": "127.0.0.1",
       "method": "GET",
       "path": "/login?error=1",
@@ -1234,8 +532,8 @@
       "user_agent": "Python-urllib/3.13"
     },
     {
-      "event_id": "ec-61ef1bf05068f50a",
-      "timestamp": "2026-10-20T06:55:37+00:00",
+      "event_id": "ec-8b4b1919cf4d718c",
+      "timestamp": "2026-10-20T14:34:19+00:00",
       "source": "127.0.0.1",
       "method": "POST",
       "path": "/login?username=admin",
@@ -1243,76 +541,13 @@
       "user_agent": "Python-urllib/3.13"
     },
     {
-      "event_id": "ec-8671e45801c18f24",
-      "timestamp": "2026-10-20T06:55:37+00:00",
+      "event_id": "ec-a395fdfe05d560ec",
+      "timestamp": "2026-10-20T14:34:19+00:00",
       "source": "127.0.0.1",
       "method": "GET",
       "path": "/login?error=1",
       "status_code": 200,
       "user_agent": "Python-urllib/3.13"
-    },
-    {
-      "event_id": "ec-24f3a3d0d779c6b8",
-      "timestamp": "2026-10-20T09:12:19+00:00",
-      "source": "127.0.0.1",
-      "method": "GET",
-      "path": "/login",
-      "status_code": 200,
-      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36 Edg/155.0.0.0"
-    },
-    {
-      "event_id": "ec-c4c22bc19753a542",
-      "timestamp": "2026-10-20T09:12:19+00:00",
-      "source": "127.0.0.1",
-      "method": "GET",
-      "path": "/static/style.css",
-      "status_code": 200,
-      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36 Edg/155.0.0.0"
-    },
-    {
-      "event_id": "ec-68cac2dbc2be5fcf",
-      "timestamp": "2026-10-20T09:12:27+00:00",
-      "source": "127.0.0.1",
-      "method": "POST",
-      "path": "/login?username=admin",
-      "status_code": 303,
-      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36 Edg/155.0.0.0"
-    },
-    {
-      "event_id": "ec-440e929bf2611dac",
-      "timestamp": "2026-10-20T09:12:27+00:00",
-      "source": "127.0.0.1",
-      "method": "GET",
-      "path": "/home",
-      "status_code": 200,
-      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36 Edg/155.0.0.0"
-    },
-    {
-      "event_id": "ec-0f1a15f31591b21c",
-      "timestamp": "2026-10-20T09:12:27+00:00",
-      "source": "127.0.0.1",
-      "method": "GET",
-      "path": "/static/style.css",
-      "status_code": 200,
-      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36 Edg/155.0.0.0"
-    },
-    {
-      "event_id": "ec-7884ab836cf49833",
-      "timestamp": "2026-10-20T09:12:27+00:00",
-      "source": "127.0.0.1",
-      "method": "GET",
-      "path": "/api/me",
-      "status_code": 200,
-      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36 Edg/155.0.0.0"
-    },
-    {
-      "event_id": "ec-7f1a7115122b7a05",
-      "timestamp": "2026-10-20T09:12:27+00:00",
-      "source": "127.0.0.1",
-      "method": "GET",
-      "path": "/api/products?category=All",
-      "status_code": 200,
-      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36 Edg/155.0.0.0"
     }
   ]
 }
