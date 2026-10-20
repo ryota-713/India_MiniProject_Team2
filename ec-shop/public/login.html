@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sign in | ShopNova</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body class="login-page">
+  <div class="login-card">
+    <div class="logo"><div class="logo-mark">🛍️</div><span>Shop<span class="accent">Nova</span></span></div>
+    <h1>Sign in</h1>
+    <p class="sub">Welcome back! Please sign in to continue shopping.</p>
+
+    <div class="alert" id="alert">Invalid username or password.</div>
+
+    <form method="post" action="/login" autocomplete="off">
+      <div class="field">
+        <label for="username">Username</label>
+        <input id="username" name="username" type="text" placeholder="Enter your username" required autofocus>
+      </div>
+      <div class="field">
+        <label for="password">Password</label>
+        <input id="password" name="password" type="password" placeholder="Enter your password" required>
+      </div>
+      <button class="btn-primary" type="submit">Sign in</button>
+    </form>
+
+    <div class="login-foot">© 2026 ShopNova — Demo store for security presentation</div>
+  </div>
+
+  <script>
+    if (new URLSearchParams(location.search).get("error")) {
+      document.getElementById("alert").classList.add("show");
+    }
+  </script>
+</body>
+</html>

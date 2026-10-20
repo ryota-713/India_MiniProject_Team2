@@ -1,0 +1,13 @@
+{
+  "dataset_type": "synthetic educational fixture",
+  "events": [
+    {"label":false,"event":{"event_id":"eval-001","timestamp":"2026-10-18T10:00:00Z","source":"synthetic-evaluation","method":"GET","path":"/api/Products","status_code":200}},
+    {"label":false,"event":{"event_id":"eval-002","timestamp":"2026-10-18T10:01:00Z","source":"synthetic-evaluation","method":"GET","path":"/rest/products/search?q=apple","status_code":200}},
+    {"label":false,"event":{"event_id":"eval-003","timestamp":"2026-10-18T10:02:00Z","source":"synthetic-evaluation","method":"GET","path":"/profile/settings","status_code":200}},
+    {"label":false,"event":{"event_id":"eval-004","timestamp":"2026-10-18T10:03:00Z","source":"synthetic-evaluation","method":"POST","path":"/rest/user/login","status_code":200}},
+    {"label":true,"event":{"event_id":"eval-005","timestamp":"2026-10-18T10:04:00Z","source":"synthetic-evaluation","method":"GET","path":"/search?q=%27%20OR%201%3D1","status_code":400}},
+    {"label":true,"event":{"event_id":"eval-006","timestamp":"2026-10-18T10:05:00Z","source":"synthetic-evaluation","method":"GET","path":"/search?q=%3Cscript%3Ealert(1)%3C/script%3E","status_code":400}},
+    {"label":true,"event":{"event_id":"eval-007","timestamp":"2026-10-18T10:06:00Z","source":"synthetic-evaluation","method":"GET","path":"/download/%252e%252e%252fetc/passwd","status_code":404}},
+    {"label":true,"event":{"event_id":"eval-008","timestamp":"2026-10-18T10:07:00Z","source":"synthetic-evaluation","method":"GET","path":"/" ,"status_code":200}}
+  ]
+}

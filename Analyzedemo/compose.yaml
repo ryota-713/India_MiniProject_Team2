@@ -1,0 +1,8 @@
+services:
+  juice-shop:
+    image: bkimminich/juice-shop:v20.3.0
+    profiles:
+      - demo
+    ports:
+      - "127.0.0.1:3000:3000"
+    restart: unless-stopped

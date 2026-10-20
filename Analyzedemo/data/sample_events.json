@@ -1,0 +1,14 @@
+{
+  "events": [
+    {"event_id":"demo-001","timestamp":"2026-10-18T09:00:00Z","source":"synthetic","method":"GET","path":"/api/Products","status_code":200,"user_agent":"DemoBrowser/1.0"},
+    {"event_id":"demo-002","timestamp":"2026-10-18T09:01:00Z","source":"synthetic","method":"GET","path":"/rest/products/search?q=apple","status_code":200,"user_agent":"DemoBrowser/1.0"},
+    {"event_id":"demo-003","timestamp":"2026-10-18T09:02:00Z","source":"synthetic","method":"GET","path":"/search?q=%27%20OR%201%3D1","status_code":400,"user_agent":"DemoBrowser/1.0"},
+    {"event_id":"demo-004","timestamp":"2026-10-18T09:03:00Z","source":"synthetic","method":"GET","path":"/search?q=%3Cscript%3Ealert(1)%3C/script%3E","status_code":400,"user_agent":"DemoBrowser/1.0"},
+    {"event_id":"demo-005","timestamp":"2026-10-18T09:04:00Z","source":"synthetic","method":"GET","path":"/download/%252e%252e%252fetc/passwd","status_code":404,"user_agent":"DemoBrowser/1.0"},
+    {"event_id":"demo-006","timestamp":"2026-10-18T09:05:00Z","source":"synthetic","method":"POST","path":"/rest/user/login","status_code":401,"user_agent":"DemoBrowser/1.0"},
+    {"event_id":"demo-007","timestamp":"2026-10-18T09:05:20Z","source":"synthetic","method":"POST","path":"/rest/user/login","status_code":401,"user_agent":"DemoBrowser/1.0"},
+    {"event_id":"demo-008","timestamp":"2026-10-18T09:05:40Z","source":"synthetic","method":"POST","path":"/rest/user/login","status_code":401,"user_agent":"DemoBrowser/1.0"},
+    {"event_id":"demo-009","timestamp":"2026-10-18T09:06:00Z","source":"synthetic","method":"POST","path":"/rest/user/login","status_code":401,"user_agent":"DemoBrowser/1.0"},
+    {"event_id":"demo-010","timestamp":"2026-10-18T09:06:20Z","source":"synthetic","method":"POST","path":"/rest/user/login","status_code":401,"user_agent":"DemoBrowser/1.0"}
+  ]
+}
